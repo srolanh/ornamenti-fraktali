@@ -22,6 +22,50 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 	}
 }
 
+function genNet(size) {
+	if (size % 2 == 1) {
+		size += 1;
+	}
+	var black = false;
+	var net = new Array;
+	net = [[1],[0]];
+	while (net[0].length < size) {
+		if (black) {
+			net[0].push(1,1);
+			black = false;
+		} else {
+			net[0].push(0,0);
+			black = true;
+		}
+	}
+	black = true;
+	while (net[1].length < size) {
+		if (black) {
+			net[1].push(1,1);
+			black = false;
+		} else {
+			net[1].push(0,0);
+			black = true;
+		}
+	}
+	return net;
+}
+
+function genInverseNet(net) {
+	var i;
+	var j;
+	for (i = 0; i < net.length; i++) {
+		for (j = 0; j < net[i].length; j++) {
+			if (net[i][j] == 1) {
+				net[i][j] = 0;
+			} else {
+				net[i][j] = 1;
+			}
+		}
+	}
+	return net;
+}
+
 function genFractal(prevImage) {
 	var image = prevImage.slice(0);
 	var i;

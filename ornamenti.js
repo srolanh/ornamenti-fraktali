@@ -2,7 +2,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 function drawImage(ctx, image, rWidth, xWidth, yHeight) {
-	var color0 = "#FFFFFF";
+	var color0 = "#00FF00";
 	var color1 = "#0000FF";
 	var widthPersistent =xWidth;
 	var i;
@@ -22,6 +22,17 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 	}
 }
 
-i = [[0,1,0],[1,0,1],[0,1,0]];
+function genFractal(prevImage) {
+	var image = prevImage.slice(0);
+	var i;
+	var j;
+	for (i = prevImage.length - 1; i >= 0; i--) {
+		for (j = prevImage[i].length - 1; j >= 0; j--) {
+			image[i].splice(j, 0, prevImage[i][j]);
+		}
+	}
+	return image;
+}
 
-drawImage(ctx, i, 10, 0, 0);
+i = [[1]];
+drawImage(ctx, genFractal(i), 10, 0, 0);

@@ -2,7 +2,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 function drawImage(ctx, image, rWidth, xWidth, yHeight) {
-	var color0 = "#00FF00";
+	var color0 = "#FFFFFF";
 	var color1 = "#0000FF";
 	var widthPersistent =xWidth;
 	var i;
@@ -22,13 +22,13 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 	}
 }
 
-function genNet(size) {
-	if (size % 2 == 1) {
-		size += 1;
-	}
-	var black = false;
+function genNet(size, inverse) {
+	var black = !!inverse;
 	var net = new Array;
 	net = [[1],[0]];
+	if (inverse) {
+		net = [[0],[1]];
+	}
 	while (net[0].length < size) {
 		if (black) {
 			net[0].push(1,1);
@@ -47,6 +47,10 @@ function genNet(size) {
 			net[1].push(0,0);
 			black = true;
 		}
+	}
+	if (net[0].length > size) {
+		net[0].pop();
+		net[1].pop();
 	}
 	return net;
 }
@@ -75,8 +79,34 @@ function genFractal(prevImage) {
 			image[i].splice(j, 0, prevImage[i][j]);
 		}
 	}
+	for (i = 0; i < image.length; i++) {
+		image[i].unshift(0, 0);
+	}
+	for (i = image.length - 1; i >= 0; i--) {
+		image[i].push(0, 0);
+	}
+	var net = genInverseNet(genNet(image[0].length));
+	var netBlack = true;
+	for (i = image.length - 1; i >= 0; i--) {
+		if (netBlack) {
+			image.splice(i, 0, net[0]);
+			netBlack = false;
+		} else {
+			image.splice(i, 0, net[1]);
+			netBlack = true;
+		}
+	}
+	if (netBlack) {
+		image.splice(image.length, 0, net[0]);
+	} else {
+		image.splice(image.length, 0, net[1]);
+	}
+	for (i = image.length - 1; i >= 0; i--) {
+		image.push(image[i]);
+	}
+	image.splice(image.length / 2, 1);
 	return image;
 }
 
-i = [[1]];
+i = [[1,1]];
 drawImage(ctx, genFractal(i), 10, 0, 0);

@@ -23,7 +23,7 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 }
 
 function genNet(size, inverse) {
-	var black = !!inverse;
+	var black = inverse;
 	var net = new Array;
 	net = [[1],[0]];
 	if (inverse) {
@@ -38,7 +38,7 @@ function genNet(size, inverse) {
 			black = true;
 		}
 	}
-	black = true;
+	black = !inverse;
 	while (net[1].length < size) {
 		if (black) {
 			net[1].push(1,1);
@@ -51,21 +51,6 @@ function genNet(size, inverse) {
 	if (net[0].length > size) {
 		net[0].pop();
 		net[1].pop();
-	}
-	return net;
-}
-
-function genInverseNet(net) {
-	var i;
-	var j;
-	for (i = 0; i < net.length; i++) {
-		for (j = 0; j < net[i].length; j++) {
-			if (net[i][j] == 1) {
-				net[i][j] = 0;
-			} else {
-				net[i][j] = 1;
-			}
-		}
 	}
 	return net;
 }
@@ -85,7 +70,7 @@ function genFractal(prevImage) {
 	for (i = image.length - 1; i >= 0; i--) {
 		image[i].push(0, 0);
 	}
-	var net = genInverseNet(genNet(image[0].length));
+	var net = genNet(image[0].length, false);
 	var netBlack = true;
 	for (i = image.length - 1; i >= 0; i--) {
 		if (netBlack) {

@@ -4,7 +4,7 @@ var ctx = canvas.getContext("2d");
 function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 	var color0 = "#FFFFFF";
 	var color1 = "#0000FF";
-	var widthPersistent =xWidth;
+	var widthPersistent = xWidth;
 	var i;
 	var j;
 	for (i = 0; i < image.length; i++) {
@@ -24,8 +24,7 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 
 function genNet(size, inverse) {
 	var black = inverse;
-	var net = new Array;
-	net = [[1],[0]];
+	var net = [[1],[0]];
 	if (inverse) {
 		net = [[0],[1]];
 	}
@@ -55,7 +54,7 @@ function genNet(size, inverse) {
 	return net;
 }
 
-function genFractal(prevImage) {
+function genFractal(prevImage, inverse) {
 	var image = prevImage.slice(0);
 	var i;
 	var j;
@@ -70,7 +69,7 @@ function genFractal(prevImage) {
 	for (i = image.length - 1; i >= 0; i--) {
 		image[i].push(0, 0);
 	}
-	var net = genNet(image[0].length, false);
+	var net = genNet(image[0].length, inverse);
 	var netBlack = true;
 	for (i = image.length - 1; i >= 0; i--) {
 		if (netBlack) {
@@ -94,4 +93,4 @@ function genFractal(prevImage) {
 }
 
 i = [[1,1]];
-drawImage(ctx, genFractal(i), 10, 0, 0);
+drawImage(ctx, genFractal(genFractal(i, false), false), 10, 0, 0);

@@ -70,15 +70,10 @@ function genFractal(prevImage, inverse) {
 		image[i].push(0, 0);
 	}
 	var net = genNet(image[0].length, inverse);
-	var netBlack = true;
+	var netIndex = 0;
 	for (i = image.length - 1; i >= 0; i--) {
-		if (netBlack) {
-			image.splice(i, 0, net[0]);
-			netBlack = false;
-		} else {
-			image.splice(i, 0, net[1]);
-			netBlack = true;
-		}
+		image.splice(i, 0, net[netIndex]);
+		netIndex = netIndex == 0 ? 1 : 0;
 	}
 	if (netBlack) {
 		image.splice(image.length, 0, net[0]);
@@ -93,4 +88,4 @@ function genFractal(prevImage, inverse) {
 }
 
 i = [[1,1]];
-drawImage(ctx, genFractal(genFractal(i, false), false), 10, 0, 0);
+drawImage(ctx, genFractal(i, false), 10, 0, 0);

@@ -83,7 +83,7 @@ function genFractal(prevImage, inverse) {
 		image.splice(i, 0, net[netIndex]);
 		netIndex = netIndex == 0 ? 1 : 0;
 	}
-	if (netBlack) {
+	if (netIndex == 0) {
 		image.splice(image.length, 0, net[0]);
 	} else {
 		image.splice(image.length, 0, net[1]);
@@ -92,4 +92,4 @@ function genFractal(prevImage, inverse) {
 }
 
 i = [[1,1]];
-drawImage(ctx, buildSymmetry(genFractal(i, false)), 10, 0, 0);
+drawImage(ctx, buildSymmetry(genFractal(genFractal(i, false), true)), 10, 0, 0);

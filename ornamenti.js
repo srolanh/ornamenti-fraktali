@@ -94,4 +94,4 @@ function genFractal(prevImage, inverse, addCells = false) {
 }
 
 i = [[1,1]];
-drawImage(ctx, buildSymmetry(genFractal(genFractal(i, false, true), false)), 10, 0, 0);
+drawImage(ctx, buildSymmetry(genFractal(genFractal(i, false, true), true)), 10, 0, 0);

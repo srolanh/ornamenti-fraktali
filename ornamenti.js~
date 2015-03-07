@@ -51,6 +51,7 @@ function genNet(size, inverse) {
 		net[0].pop();
 		net[1].pop();
 	}
+	console.log(net);
 	return net;
 }
 
@@ -75,7 +76,7 @@ function genFractal(prevImage, inverse, addCells = false) {
 		for (i = 0; i < image.length; i++) {
 			image[i].unshift(0, 0);
 		}
-		for (i = image.length - 1; i >= 0; i--) {
+		for (i = image.length - 2; i >= 0; i--) {
 			image[i].push(0, 0);
 		}
 	}
@@ -83,8 +84,15 @@ function genFractal(prevImage, inverse, addCells = false) {
 	var netIndex = 0;
 	for (i = image.length - 1; i >= 0; i--) {
 		image.splice(i, 0, net[netIndex]);
-		netIndex = netIndex == 0 ? 1 : 0;
+		console.log(i);
+		if (netIndex == 0) {
+			netIndex = 1;
+		} else {
+			netIndex = 0;
+		}
+		console.log(netIndex);
 	}
+	debugger;
 	if (netIndex == 0) {
 		image.splice(image.length, 0, net[0]);
 	} else {
@@ -93,5 +101,8 @@ function genFractal(prevImage, inverse, addCells = false) {
 	return image;
 }
 
-i = [[1,1]];
-drawImage(ctx, buildSymmetry(genFractal(genFractal(i, true, false), true)), 10, 0, 0);
+i = [[0,1,1,0]];
+drawImage(ctx, buildSymmetry(genFractal(genFractal(i,false),false)), 10, 0, 0);
+//drawImage(ctx, buildSymmetry(genFractal(genFractal(i,false),true)), 10, 0, 0);
+//drawImage(ctx, buildSymmetry(genFractal(genFractal(i,true),false)), 10, 0, 0);
+//drawImage(ctx, buildSymmetry(genFractal(genFractal(i,true),true)), 10, 0, 0);

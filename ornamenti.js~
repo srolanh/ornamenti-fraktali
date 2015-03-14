@@ -99,7 +99,7 @@ function genFractal(prevImage, inverse) {
 
 i = [[0,1,1,0],[0,1,1,0]];
 //drawImage(ctx, genFractal(genFractal(genFractal(i,false),false),false), 10, 0, 0);
-drawImage(ctx, genFractal(i,true), 10, 0, 0);
+drawImage(ctx, genFractal(i,false), 10, 0, 0);
 //drawImage(ctx, genFractal(i,true), 10, 0, 0);
 //drawImage(ctx, genFractal(genFractal(i,false),false), 10, 0, 0);
 //drawImage(ctx, genFractal(genFractal(i,false),true), 10, 0, 0);

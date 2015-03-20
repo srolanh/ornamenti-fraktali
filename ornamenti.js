@@ -22,7 +22,7 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 	}
 }
 
-function genNet(size, inverse) {
+/*function genNet(size, inverse) {
 	var black = inverse;
 	var net;
 	net = [[1],[0]];
@@ -54,15 +54,6 @@ function genNet(size, inverse) {
 	}
 	//console.log(net);
 	return net;
-}
-
-/*function buildSymmetry(image) {
-	var i;
-	for (i = image.length - 1; i >= 0; i--) {
-		image.push(image[i]);
-	}
-	image.splice(image.length / 2, 1);
-	return image;
 }*/
 
 function genFractal(prevImage, inverse) {
@@ -74,32 +65,28 @@ function genFractal(prevImage, inverse) {
 			image[i].splice(j, 0, prevImage[i][j]);
 		}
 	}
-	var net = genNet(image[0].length, inverse);
+	
+	/*var net = genNet(image[0].length, inverse);
 	var netIndex = 0;
 	for (i = image.length - 1; i >= 0; i--) {
 		image.splice(i, 0, net[netIndex]);
-		//console.log(i);
 		if (netIndex == 0) {
 			netIndex = 1;
 		} else {
 			netIndex = 0;
 		}
-		//console.log(netIndex);
 	}
-	//debugger;
 	if (netIndex == 0) {
 		image.splice(image.length, 0, net[0]);
 	} else {
 		image.splice(image.length, 0, net[1]);
-	}
-	//image.splice(0, 0, Math.floor(image.length / 2))
-	console.log(image);
+	}*/
 	return image;
 }
 
-i = [[0,1,1,0],[0,1,1,0]];
+i = [[[],[],[],[],[],[]],[[],[],[],[],[],[]],[[],[],[],[],[],[]],[[],[],[],[],[],[]]];
 //drawImage(ctx, genFractal(genFractal(genFractal(i,false),false),false), 10, 0, 0);
-drawImage(ctx, genFractal(i,true), 10, 0, 0);
+//drawImage(ctx, genFractal(i,true), 10, 0, 0);
 //drawImage(ctx, genFractal(i,true), 10, 0, 0);
 //drawImage(ctx, genFractal(genFractal(i,false),false), 10, 0, 0);
 //drawImage(ctx, genFractal(genFractal(i,false),true), 10, 0, 0);

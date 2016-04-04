@@ -65,22 +65,26 @@ function genNet(size, inverse) {
 
 // ģenerē ornamentu
 function genFractal(prevImage, inverse) {
+	debugger;
 	console.log(prevImage);
-	var image = prevImage; // izveido rakstāmu kopiju
-	var middle = Math.ceil(prevImage.length / 2); // norāda vidu, kas atkārtojams divreiz
+	var image = prevImage.slice(0); // izveido rakstāmu kopiju
+	var middle = Math.floor(prevImage.length / 2); // norāda vidu, kas atkārtojams divreiz
 	console.log(image);
 	var i;
 	var j;
 	for (i = prevImage.length - 1; i >= 0; i--) {
+		if (image[i].length == 16) {
+			continue;
+		}
 		for (j = prevImage[i].length - 1; j >= 0; j--) { // cikls pār katras rindas image[i] kartru elementu image[i][j]
 			image[i].splice(j, 0, prevImage[i][j]); // atkārto katru elementu divreiz
 		}
-		if (i+1 == middle && prevImage.length >= 5) {
-			image.push(image[image.length - 1]); // atkārto vidu divreiz
-		}
+	}
+	if (image[0].length == 16) {
+		image.splice(middle+1, 0, image[middle]);
 	}
 	//console.log(image);
-	var net = genNet(image[0].length, inverse); // ģenerē tīklu onamentam
+	var net = genNet(image[1].length, inverse); // ģenerē tīklu onamentam
 	var netIndex = 0; // norāda, kura tīkla rinda jāievieto
 	for (i = image.length - 1; i >= 0; i--) {
 		image.splice(i, 0, net[netIndex]); // ievieto vajadzīgo tīkla rindu

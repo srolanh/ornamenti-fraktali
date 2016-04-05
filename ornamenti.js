@@ -8,7 +8,9 @@ function drawImage(ctx, image, rWidth, xWidth, yHeight) {
 	// rWidth - elementa izmērs, parasti 10
 	// xWidth - sākumpunkta x koordināta, parasti 0
 	// yHeight - sākumpunkta y koordināta, parasti 0
-	var color0 = "#00FF00"; // krāsa atbilst 0
+	canvas.height = image.length * rWidth; 
+	canvas.width = image[0].length * rWidth; // ekrāna bildes garums,platums = raksta garums,platums
+	var color0 = "#FFFFFF"; // krāsa atbilst 0
 	var color1 = "#0000FF"; // krāsa atbilst 1
 	var widthPersistent = xWidth;
 	var i;
@@ -64,24 +66,25 @@ function genNet(size, inverse) {
 }
 
 // ģenerē ornamentu
-function genFractal(prevImage, inverse) {
+function genFractal(prevImage, inverse, level) {
 	debugger;
 	console.log(prevImage);
 	var image = prevImage.slice(0); // izveido rakstāmu kopiju
 	var middle = Math.floor(prevImage.length / 2); // norāda vidu, kas atkārtojams divreiz
+	var rowLength = Math.pow(2, level+2); // norāda vajadzīgo rindas garumu šim līmenim 
 	console.log(image);
 	var i;
 	var j;
 	for (i = prevImage.length - 1; i >= 0; i--) {
-		if (image[i].length == 16) {
+		if (image[i].length == rowLength) {
 			continue;
 		}
 		for (j = prevImage[i].length - 1; j >= 0; j--) { // cikls pār katras rindas image[i] kartru elementu image[i][j]
 			image[i].splice(j, 0, prevImage[i][j]); // atkārto katru elementu divreiz
 		}
 	}
-	if (image[0].length == 16) {
-		image.splice(middle+1, 0, image[middle]);
+	if (level > 1) {
+		image.splice(middle+1, 0, image[middle]); // atkārto vidu divreiz
 	}
 	//console.log(image);
 	var net = genNet(image[1].length, inverse); // ģenerē tīklu onamentam
@@ -97,10 +100,10 @@ function genFractal(prevImage, inverse) {
 
 i = [[0,1,1,0],[0,1,1,0]]; // pirmā ievade
 //drawImage(ctx, i, 10, 0, 0)
-//drawImage(ctx, genFractal(genFractal(genFractal(i,false),false),false), 10, 0, 0);
-//drawImage(ctx, genFractal(i,true), 10, 0, 0);
-//drawImage(ctx, genFractal(i,false), 10, 0, 0);
-drawImage(ctx, genFractal(genFractal(i,false),false), 10, 0, 0);
-//drawImage(ctx, genFractal(genFractal(i,false),true), 10, 0, 0);
-//drawImage(ctx, genFractal(genFractal(i,true),false), 10, 0, 0);
-//drawImage(ctx, genFractal(genFractal(i,true),true), 10, 0, 0);
+drawImage(ctx, genFractal(genFractal(genFractal(i,false,1),false,2),false,3), 10, 0, 0);
+//drawImage(ctx, genFractal(i,true,1), 10, 0, 0);
+//drawImage(ctx, genFractal(i,false,1), 10, 0, 0);
+//drawImage(ctx, genFractal(genFractal(i,false,1),false,2), 10, 0, 0);
+//drawImage(ctx, genFractal(genFractal(i,false,1),true,2), 10, 0, 0);
+//drawImage(ctx, genFractal(genFractal(i,true,1),false,2), 10, 0, 0);
+//drawImage(ctx, genFractal(genFractal(i,true,1),true,2), 10, 0, 0);

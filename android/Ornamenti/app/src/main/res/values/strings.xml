@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ornamenti</string>
+    <string name="kiegelis">Ķieģelis</string>
+    <string name="ugunskrusts">Ugunskrusts</string>
+    <string name="mugunskrusts">Māras ugunskrunsts</string>
+    <string name="action_gen">Ģenerēt</string>
+</resources>

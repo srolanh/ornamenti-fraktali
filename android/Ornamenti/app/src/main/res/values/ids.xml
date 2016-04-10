@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="gen_kiegelis" type="id" />
+    <item name="gen_inverse_kiegelis" type="id" />
+    <item name="gen_ugunskrusts" type="id" />
+    <item name="gen_inverse_ugunskrusts" type="id" />
+    <item name="gen_m_ugunskrusts" type="id" />
+    <item name="gen_inverse_m_ugunskrusts" type="id" />
+</resources>

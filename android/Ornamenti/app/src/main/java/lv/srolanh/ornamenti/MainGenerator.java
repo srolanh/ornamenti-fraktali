@@ -1,21 +1,98 @@
 package lv.srolanh.ornamenti;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.util.Log;
+import android.view.Display;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IdentityHashMap;
 
 /**
  * Created by srolanh on 16.6.4.
  */
 public class MainGenerator {
 
-    ArrayList genNet(int size, boolean inverse) {
+    public static ArrayList[] init() {
+        ArrayList[] constants = new ArrayList[3];
+        final ArrayList<ArrayList<Integer>> KIEGELIS_1 = new ArrayList<>();
+        KIEGELIS_1.add(new ArrayList<Integer>());
+        KIEGELIS_1.add(new ArrayList<Integer>());
+        KIEGELIS_1.get(0).addAll(Arrays.asList(0,1,1,0));
+        KIEGELIS_1.get(1).addAll(Arrays.asList(0,1,1,0));
+        constants[0] = KIEGELIS_1;
+        final ArrayList<ArrayList<Integer>> UGUNSKRUSTS_1 = new ArrayList<>();
+        UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>(), new ArrayList<Integer>()));
+        UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0, 0, 1, 0));
+        UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(1, 1, 1, 0));
+        UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,1,1,1));
+        UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,1,0,0));
+        constants[1] = UGUNSKRUSTS_1;
+        final ArrayList<ArrayList<Integer>> M_UGUNSKRUSTS_1 = new ArrayList<>();
+        M_UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>(), new ArrayList<Integer>()));
+        M_UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0, 0, 0, 0, 0, 1, 0, 0, 0, 0));
+        M_UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(0, 0, 0, 0, 1, 1, 0, 0, 0, 0));
+        M_UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,0,1,1,1,0,0,1,0,0));
+        M_UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,0,0,1,1,0,1,1,0,0));
+        M_UGUNSKRUSTS_1.get(4).addAll(Arrays.asList(1,1,0,0,1,1,1,1,1,0));
+        M_UGUNSKRUSTS_1.get(5).addAll(Arrays.asList(0,1,1,1,1,1,0,0,1,1));
+        M_UGUNSKRUSTS_1.get(6).addAll(Arrays.asList(0,0,1,1,0,1,1,0,0,0));
+        M_UGUNSKRUSTS_1.get(7).addAll(Arrays.asList(0,0,1,0,0,1,1,1,0,0));
+        M_UGUNSKRUSTS_1.get(8).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
+        M_UGUNSKRUSTS_1.get(9).addAll(Arrays.asList(0,0,0,0,1,0,0,0,0,0));
+        constants[2] = M_UGUNSKRUSTS_1;
+        return constants;
+    }
+
+    public static void drawImage(Canvas canvas, ArrayList<ArrayList<Integer>> image) {
+        int[] dimens = MainActivity.dimensions;
+        int rWidth = dimens[0] / image.get(0).size();
+        int xWidth = 0;
+        int yHeight = 0;
+        int widthPersistent = xWidth;
+        int i;
+        int j;
+        Paint colorCurrent;
+        Paint color0 = new Paint();
+        Paint color1 = new Paint();
+        color0.setStyle(Paint.Style.FILL);
+        color1.setStyle(Paint.Style.FILL);
+        color0.setColor(Color.parseColor("#FFFFFF"));
+        color1.setColor(Color.parseColor("#0000FF"));
+        for (i = 0; i < image.size(); i++) {
+            for (j = 0; j < image.get(i).size(); j++) {
+                if (image.get(i).get(j) == 1) {
+                    colorCurrent = color1;
+                } else {
+                    colorCurrent = color0;
+                }
+                Log.d("Ornamenti", Integer.toString(xWidth) + ";" + Integer.toString(yHeight) + ";" +
+                        Integer.toString(xWidth + rWidth) + ";" + Integer.toString(yHeight + rWidth));
+                canvas.drawRect(xWidth, yHeight, xWidth + rWidth, yHeight + rWidth, colorCurrent);
+                xWidth += rWidth;
+            }
+            xWidth = widthPersistent;
+            yHeight += rWidth;
+        }
+    }
+
+    public static ArrayList genNet(int size, boolean inverse) {
         int color = inverse ? 0 : 1; // norāda, vai tīklā jāliek 1 vai 0
         ArrayList<ArrayList<Integer>> net = new ArrayList<ArrayList<Integer>>(); // tīkla sākums
         net.add(new ArrayList<Integer>());
         net.add(new ArrayList<Integer>());
         if (inverse) {
-            net.get(0).set(0, 1);
+            net.get(0).add(1);
+            net.get(1).add(0);
         } else {
+            net.get(0).add(0);
+            net.get(1).add(1);
         }
         while (net.get(0).size() < size) { // pirmā rinda
             if (color == 1) {
@@ -37,14 +114,14 @@ public class MainGenerator {
             }
         }
         if (net.get(0).size() > size) { // ja tīkls par 1 lielāks nekā vajag
-            net.get(0).remove(net.get(0).size()); // noņemt elementu no pirmās rindas beigām
-            net.get(1).remove(net.get(0).size()); // noņemt elementu no otrās rindas beigām
+            net.get(0).remove(net.get(0).size()-1); // noņemt elementu no pirmās rindas beigām
+            net.get(1).remove(net.get(0).size()-1); // noņemt elementu no otrās rindas beigām
         }
         return net;
     }
 
     // ģenerē ornamentu
-    ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level, Boolean repeatMiddle) {
+    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level, Boolean repeatMiddle) {
         if (repeatMiddle == null) {
             repeatMiddle = true;
         }

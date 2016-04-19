@@ -2,11 +2,11 @@ package lv.srolanh.ornamenti;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -23,10 +23,18 @@ public class KiegelisActivity extends ActionBarActivity {
         FrameLayout layout = new FrameLayout(this);
         layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-        final MainActivity.FractalView kiegelis = new MainActivity.FractalView(this);
+        final MainActivity.OrnamentView kiegelis = new MainActivity.OrnamentView(this);
         ArrayList[] constants = MainGenerator.init();
         kiegelis.setImage(constants[0], 0);
         kiegelis.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        kiegelis.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("Kiegelis", "Registered long press");
+                kiegelis.saveImage(v.getContext());
+                return true;
+            }
+        });
 
         RelativeLayout buttonLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

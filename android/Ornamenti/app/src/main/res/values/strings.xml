@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">Ornamenti</string>
+    <string name="version">v0.3.0 BETA</string>
     <string name="kiegelis">Ķieģelis</string>
-    <string name="ugunskrusts">Ugunskrusts</string>
+    <string name="ugunskrusts">Mazais ugunskrusts</string>
     <string name="mugunskrusts">Māras ugunskrunsts</string>
+    <string name="l_ugunskrusts">Ugunskrusts</string>
     <string name="action_gen">Ģenerēt</string>
+    <string name="action_info">Info</string>
+    <string name="action_settings">Iestatījumi</string>
+    <string name="pref_title_color1">Raksta rūtiņu krāsa</string>
+    <string name="pref_title_color0">Tukšo rūtiņu krāsa</string>
+    <string name="pref_dialog_color_select">Izvēlēties krāsu</string>
+    <string name="pref_default_color1">#0000FF</string>
+    <string name="pref_default_color0">#FFFFFF</string>
 </resources>

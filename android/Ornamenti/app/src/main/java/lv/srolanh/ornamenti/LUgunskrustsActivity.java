@@ -11,25 +11,27 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
+import lv.srolanh.ornamenti.MainActivity.*;
+
 /**
- * Created by srolanh on 16.6.4.
+ * Created by srolanh on 16.11.4.
  */
-public class MUgunskrustsActivity extends ActionBarActivity {
+public class LUgunskrustsActivity extends ActionBarActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FrameLayout layout = new FrameLayout(this);
         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        final MainActivity.OrnamentView mukrusts = new MainActivity.OrnamentView(this);
+        final OrnamentView lukrusts = new OrnamentView(this);
         ArrayList[] constants = MainGenerator.init();
-        mukrusts.setImage(constants[2], 0);
-        mukrusts.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mukrusts.setOnLongClickListener(new View.OnLongClickListener() {
+        lukrusts.setImage(constants[3], 0);
+        lukrusts.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        lukrusts.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("MUgunskrusts", "Long press registered");
-                mukrusts.saveImage(v.getContext());
+                Log.d("LUgunskrusts", "Long press registered");
+                lukrusts.saveImage(v.getContext());
                 return true;
             }
         });
@@ -45,35 +47,34 @@ public class MUgunskrustsActivity extends ActionBarActivity {
         genInverseParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         genInverseParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         genInverse.setLayoutParams(genInverseParams);
-        genInverse.setId(R.id.gen_inverse_m_ugunskrusts);
+        genInverse.setId(R.id.gen_inverse_l_ugunskrusts);
         genInverse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mukrusts.updateImage(true);
-                mukrusts.invalidate();
+                lukrusts.updateImage(true);
+                lukrusts.invalidate();
             }
         });
 
         Button gen = new Button(this);
         gen.setText("Ģenerēt parasto");
         RelativeLayout.LayoutParams genParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        genParams.addRule(RelativeLayout.ABOVE, R.id.gen_inverse_m_ugunskrusts);
+        genParams.addRule(RelativeLayout.ABOVE, R.id.gen_inverse_l_ugunskrusts);
         genParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         gen.setLayoutParams(genParams);
-        gen.setId(R.id.gen_m_ugunskrusts);
+        gen.setId(R.id.gen_l_ugunskrusts);
         gen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mukrusts.updateImage(false);
-                mukrusts.invalidate();
+                lukrusts.updateImage(false);
+                lukrusts.invalidate();
             }
         });
 
         buttonLayout.addView(gen);
         buttonLayout.addView(genInverse);
-        layout.addView(mukrusts);
+        layout.addView(lukrusts);
         layout.addView(buttonLayout);
         setContentView(layout);
     }
-
 }

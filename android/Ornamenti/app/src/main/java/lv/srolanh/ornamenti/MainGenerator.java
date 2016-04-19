@@ -1,14 +1,15 @@
 package lv.srolanh.ornamenti;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Display;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.IdentityHashMap;
 
 /**
  * Created by srolanh on 16.6.4.
@@ -16,7 +17,7 @@ import java.util.IdentityHashMap;
 public class MainGenerator {
 
     public static ArrayList[] init() {
-        ArrayList[] constants = new ArrayList[3];
+        ArrayList[] constants = new ArrayList[4];
         final ArrayList<ArrayList<Integer>> KIEGELIS_1 = new ArrayList<>();
         KIEGELIS_1.add(new ArrayList<Integer>());
         KIEGELIS_1.add(new ArrayList<Integer>());
@@ -47,12 +48,29 @@ public class MainGenerator {
         M_UGUNSKRUSTS_1.get(8).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
         M_UGUNSKRUSTS_1.get(9).addAll(Arrays.asList(0,0,0,0,1,0,0,0,0,0));
         constants[2] = M_UGUNSKRUSTS_1;
+        final ArrayList<ArrayList<Integer>> L_UGUNSKRUSTS_1 = new ArrayList<>();
+        L_UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>()));
+        L_UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0,0,0,0,1,0));
+        L_UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(1,1,0,1,1,0));
+        L_UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,1,1,1,0,0));
+        L_UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,0,1,1,1,0));
+        L_UGUNSKRUSTS_1.get(4).addAll(Arrays.asList(0,1,1,0,1,1));
+        L_UGUNSKRUSTS_1.get(5).addAll(Arrays.asList(0,1,0,0,0,0));
+        constants[3] = L_UGUNSKRUSTS_1;
         return constants;
     }
 
-    public static void drawImage(Canvas canvas, ArrayList<ArrayList<Integer>> image) {
+    public static void drawImage(Context ctx, Canvas canvas, ArrayList<ArrayList<Integer>> image) {
         int[] dimens = MainActivity.dimensions;
-        int rWidth = dimens[0] / image.get(0).size();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String colorPrimary = preferences.getString("pref_color1", "#0000FF");
+        String colorSecondary = preferences.getString("pref_color0", "#FFFFFF");
+        int rSize = dimens[0] / image.get(0).size();
+        if (rSize == 0) {
+            rSize = 1;
+        }
         int xWidth = 0;
         int yHeight = 0;
         int widthPersistent = xWidth;
@@ -63,8 +81,8 @@ public class MainGenerator {
         Paint color1 = new Paint();
         color0.setStyle(Paint.Style.FILL);
         color1.setStyle(Paint.Style.FILL);
-        color0.setColor(Color.parseColor("#FFFFFF"));
-        color1.setColor(Color.parseColor("#0000FF"));
+        color0.setColor(Color.parseColor(colorSecondary));
+        color1.setColor(Color.parseColor(colorPrimary));
         for (i = 0; i < image.size(); i++) {
             for (j = 0; j < image.get(i).size(); j++) {
                 if (image.get(i).get(j) == 1) {
@@ -72,14 +90,13 @@ public class MainGenerator {
                 } else {
                     colorCurrent = color0;
                 }
-                Log.d("Ornamenti", Integer.toString(xWidth) + ";" + Integer.toString(yHeight) + ";" +
-                        Integer.toString(xWidth + rWidth) + ";" + Integer.toString(yHeight + rWidth));
-                canvas.drawRect(xWidth, yHeight, xWidth + rWidth, yHeight + rWidth, colorCurrent);
-                xWidth += rWidth;
+                canvas.drawRect(xWidth, yHeight, xWidth + rSize, yHeight + rSize, colorCurrent);
+                xWidth += rSize;
             }
             xWidth = widthPersistent;
-            yHeight += rWidth;
+            yHeight += rSize;
         }
+        Log.i("Graphics", "Drew " + image.size() + " rows, " + image.get(0).size() + " columns of size " + rSize);
     }
 
     public static ArrayList genNet(int size, boolean inverse) {

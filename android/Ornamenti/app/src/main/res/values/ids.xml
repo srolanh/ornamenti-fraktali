@@ -6,4 +6,6 @@
     <item name="gen_inverse_ugunskrusts" type="id" />
     <item name="gen_m_ugunskrusts" type="id" />
     <item name="gen_inverse_m_ugunskrusts" type="id" />
+    <item name="gen_l_ugunskrusts" type="id" />
+    <item name="gen_inverse_l_ugunskrusts" type="id" />
 </resources>

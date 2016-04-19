@@ -2,6 +2,7 @@ package lv.srolanh.ornamenti;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,10 +22,19 @@ public class UgunskrustsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         FrameLayout layout = new FrameLayout(this);
         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        final MainActivity.FractalView ukrusts = new MainActivity.FractalView(this);
+        final MainActivity.OrnamentView ukrusts = new MainActivity.OrnamentView(this);
         ArrayList[] constants = MainGenerator.init();
         ukrusts.setImage(constants[1], 0);
         ukrusts.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        ukrusts.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("Ugunskrusts", "Long press registered");
+                ukrusts.saveImage(v.getContext());
+                return true;
+            }
+        });
+
         RelativeLayout buttonLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);

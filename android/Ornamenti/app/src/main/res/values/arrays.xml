@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="color_list">
+        <item>Sarkans</item>
+        <item>Zaļš</item>
+        <item>Zils</item>
+        <item>Balts</item>
+        <item>Melns</item>
+    </string-array>
+    <string-array name="color_value_list">
+        <item>#FF0000</item>
+        <item>#00FF00</item>
+        <item>#0000FF</item>
+        <item>#FFFFFF</item>
+        <item>#000000</item>
+    </string-array>
+</resources>

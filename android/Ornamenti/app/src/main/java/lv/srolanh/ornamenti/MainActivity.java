@@ -62,6 +62,10 @@ public class MainActivity extends ActionBarActivity {
                     case R.id.l_ugunskrusts:
                         intent = new Intent(v.getContext(), LUgunskrustsActivity.class);
                         v.getContext().startActivity(intent);
+                        break;
+                    case R.id.krusts:
+                        intent = new Intent(v.getContext(), KrustsActivity.class);
+                        v.getContext().startActivity(intent);
                 }
             }
         });

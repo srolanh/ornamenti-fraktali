@@ -2,15 +2,21 @@
 <resources>
     <string-array name="color_list">
         <item>Sarkans</item>
-        <item>Zaļš</item>
+        <item>Dzeltens</item>
+        <item>Zaļš</item>]
+        <item>Gaiši zils</item>
         <item>Zils</item>
+        <item>Violets</item>
         <item>Balts</item>
         <item>Melns</item>
     </string-array>
     <string-array name="color_value_list">
         <item>#FF0000</item>
+        <item>#FFFF00</item>
         <item>#00FF00</item>
+        <item>#00FFFF</item>
         <item>#0000FF</item>
+        <item>#FF00FF</item>
         <item>#FFFFFF</item>
         <item>#000000</item>
     </string-array>

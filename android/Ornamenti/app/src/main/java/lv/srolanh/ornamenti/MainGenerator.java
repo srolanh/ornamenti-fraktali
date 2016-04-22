@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class MainGenerator {
 
     public static ArrayList[] init() {
-        ArrayList[] constants = new ArrayList[4];
+        ArrayList[] constants = new ArrayList[5];
         final ArrayList<ArrayList<Integer>> KIEGELIS_1 = new ArrayList<>();
         KIEGELIS_1.add(new ArrayList<Integer>());
         KIEGELIS_1.add(new ArrayList<Integer>());
@@ -27,8 +27,8 @@ public class MainGenerator {
         final ArrayList<ArrayList<Integer>> UGUNSKRUSTS_1 = new ArrayList<>();
         UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
                 new ArrayList<Integer>(), new ArrayList<Integer>()));
-        UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0, 0, 1, 0));
-        UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(1, 1, 1, 0));
+        UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0,0,1,0));
+        UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(1,1,1,0));
         UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,1,1,1));
         UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,1,0,0));
         constants[1] = UGUNSKRUSTS_1;
@@ -37,8 +37,8 @@ public class MainGenerator {
                 new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
                 new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
                 new ArrayList<Integer>(), new ArrayList<Integer>()));
-        M_UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0, 0, 0, 0, 0, 1, 0, 0, 0, 0));
-        M_UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(0, 0, 0, 0, 1, 1, 0, 0, 0, 0));
+        M_UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0,0,0,0,0,1,0,0,0,0));
+        M_UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
         M_UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,0,1,1,1,0,0,1,0,0));
         M_UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,0,0,1,1,0,1,1,0,0));
         M_UGUNSKRUSTS_1.get(4).addAll(Arrays.asList(1,1,0,0,1,1,1,1,1,0));
@@ -59,6 +59,14 @@ public class MainGenerator {
         L_UGUNSKRUSTS_1.get(4).addAll(Arrays.asList(0,1,1,0,1,1));
         L_UGUNSKRUSTS_1.get(5).addAll(Arrays.asList(0,1,0,0,0,0));
         constants[3] = L_UGUNSKRUSTS_1;
+        final ArrayList<ArrayList<Integer>> KRUSTS_1 = new ArrayList<>();
+        KRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
+                new ArrayList<Integer>(), new ArrayList<Integer>()));
+        KRUSTS_1.get(0).addAll(Arrays.asList(0,1,1,0));
+        KRUSTS_1.get(1).addAll(Arrays.asList(1,1,1,1));
+        KRUSTS_1.get(2).addAll(Arrays.asList(1,1,1,1));
+        KRUSTS_1.get(3).addAll(Arrays.asList(0,1,1,0));
+        constants[4] = KRUSTS_1;
         return constants;
     }
 

@@ -8,4 +8,6 @@
     <item name="gen_inverse_m_ugunskrusts" type="id" />
     <item name="gen_l_ugunskrusts" type="id" />
     <item name="gen_inverse_l_ugunskrusts" type="id" />
+    <item name="gen_krusts" type="id" />
+    <item name="gen_inverse_krusts" type="id" />
 </resources>

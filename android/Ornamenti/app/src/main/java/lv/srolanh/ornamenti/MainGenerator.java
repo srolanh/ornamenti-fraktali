@@ -17,56 +17,67 @@ import java.util.Arrays;
 public class MainGenerator {
 
     public static ArrayList[] init() {
-        ArrayList[] constants = new ArrayList[5];
-        final ArrayList<ArrayList<Integer>> KIEGELIS_1 = new ArrayList<>();
-        KIEGELIS_1.add(new ArrayList<Integer>());
-        KIEGELIS_1.add(new ArrayList<Integer>());
-        KIEGELIS_1.get(0).addAll(Arrays.asList(0,1,1,0));
-        KIEGELIS_1.get(1).addAll(Arrays.asList(0,1,1,0));
-        constants[0] = KIEGELIS_1;
-        final ArrayList<ArrayList<Integer>> UGUNSKRUSTS_1 = new ArrayList<>();
-        UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>(), new ArrayList<Integer>()));
-        UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0,0,1,0));
-        UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(1,1,1,0));
-        UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,1,1,1));
-        UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,1,0,0));
-        constants[1] = UGUNSKRUSTS_1;
-        final ArrayList<ArrayList<Integer>> M_UGUNSKRUSTS_1 = new ArrayList<>();
-        M_UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>(), new ArrayList<Integer>()));
-        M_UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0,0,0,0,0,1,0,0,0,0));
-        M_UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
-        M_UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,0,1,1,1,0,0,1,0,0));
-        M_UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,0,0,1,1,0,1,1,0,0));
-        M_UGUNSKRUSTS_1.get(4).addAll(Arrays.asList(1,1,0,0,1,1,1,1,1,0));
-        M_UGUNSKRUSTS_1.get(5).addAll(Arrays.asList(0,1,1,1,1,1,0,0,1,1));
-        M_UGUNSKRUSTS_1.get(6).addAll(Arrays.asList(0,0,1,1,0,1,1,0,0,0));
-        M_UGUNSKRUSTS_1.get(7).addAll(Arrays.asList(0,0,1,0,0,1,1,1,0,0));
-        M_UGUNSKRUSTS_1.get(8).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
-        M_UGUNSKRUSTS_1.get(9).addAll(Arrays.asList(0,0,0,0,1,0,0,0,0,0));
-        constants[2] = M_UGUNSKRUSTS_1;
-        final ArrayList<ArrayList<Integer>> L_UGUNSKRUSTS_1 = new ArrayList<>();
-        L_UGUNSKRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>(), new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>()));
-        L_UGUNSKRUSTS_1.get(0).addAll(Arrays.asList(0,0,0,0,1,0));
-        L_UGUNSKRUSTS_1.get(1).addAll(Arrays.asList(1,1,0,1,1,0));
-        L_UGUNSKRUSTS_1.get(2).addAll(Arrays.asList(0,1,1,1,0,0));
-        L_UGUNSKRUSTS_1.get(3).addAll(Arrays.asList(0,0,1,1,1,0));
-        L_UGUNSKRUSTS_1.get(4).addAll(Arrays.asList(0,1,1,0,1,1));
-        L_UGUNSKRUSTS_1.get(5).addAll(Arrays.asList(0,1,0,0,0,0));
-        constants[3] = L_UGUNSKRUSTS_1;
-        final ArrayList<ArrayList<Integer>> KRUSTS_1 = new ArrayList<>();
-        KRUSTS_1.addAll(Arrays.asList(new ArrayList<Integer>(), new ArrayList<Integer>(),
-                new ArrayList<Integer>(), new ArrayList<Integer>()));
-        KRUSTS_1.get(0).addAll(Arrays.asList(0,1,1,0));
-        KRUSTS_1.get(1).addAll(Arrays.asList(1,1,1,1));
-        KRUSTS_1.get(2).addAll(Arrays.asList(1,1,1,1));
-        KRUSTS_1.get(3).addAll(Arrays.asList(0,1,1,0));
-        constants[4] = KRUSTS_1;
+        ArrayList[] constants = new ArrayList[6];
+        final ArrayList<ArrayList<Integer>> KIEGELIS = new ArrayList<>(2);
+        while (KIEGELIS.size() < 2) {
+            KIEGELIS.add(new ArrayList<Integer>());
+        }
+        KIEGELIS.get(0).addAll(Arrays.asList(0,1,1,0));
+        KIEGELIS.get(1).addAll(Arrays.asList(0,1,1,0));
+        constants[0] = KIEGELIS;
+        final ArrayList<ArrayList<Integer>> UGUNSKRUSTS = new ArrayList<>(4);
+        while (UGUNSKRUSTS.size() < 4) {
+            UGUNSKRUSTS.add(new ArrayList<Integer>());
+        }
+        UGUNSKRUSTS.get(0).addAll(Arrays.asList(0,0,1,0));
+        UGUNSKRUSTS.get(1).addAll(Arrays.asList(1,1,1,0));
+        UGUNSKRUSTS.get(2).addAll(Arrays.asList(0,1,1,1));
+        UGUNSKRUSTS.get(3).addAll(Arrays.asList(0,1,0,0));
+        constants[1] = UGUNSKRUSTS;
+        final ArrayList<ArrayList<Integer>> M_UGUNSKRUSTS = new ArrayList<>(10);
+        while (M_UGUNSKRUSTS.size() < 10) {
+            M_UGUNSKRUSTS.add(new ArrayList<Integer>());
+        }
+        M_UGUNSKRUSTS.get(0).addAll(Arrays.asList(0,0,0,0,0,1,0,0,0,0));
+        M_UGUNSKRUSTS.get(1).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
+        M_UGUNSKRUSTS.get(2).addAll(Arrays.asList(0,0,1,1,1,0,0,1,0,0));
+        M_UGUNSKRUSTS.get(3).addAll(Arrays.asList(0,0,0,1,1,0,1,1,0,0));
+        M_UGUNSKRUSTS.get(4).addAll(Arrays.asList(1,1,0,0,1,1,1,1,1,0));
+        M_UGUNSKRUSTS.get(5).addAll(Arrays.asList(0,1,1,1,1,1,0,0,1,1));
+        M_UGUNSKRUSTS.get(6).addAll(Arrays.asList(0,0,1,1,0,1,1,0,0,0));
+        M_UGUNSKRUSTS.get(7).addAll(Arrays.asList(0,0,1,0,0,1,1,1,0,0));
+        M_UGUNSKRUSTS.get(8).addAll(Arrays.asList(0,0,0,0,1,1,0,0,0,0));
+        M_UGUNSKRUSTS.get(9).addAll(Arrays.asList(0,0,0,0,1,0,0,0,0,0));
+        constants[2] = M_UGUNSKRUSTS;
+        final ArrayList<ArrayList<Integer>> L_UGUNSKRUSTS = new ArrayList<>(6);
+        while (L_UGUNSKRUSTS.size() < 6) {
+            L_UGUNSKRUSTS.add(new ArrayList<Integer>());
+        }
+        L_UGUNSKRUSTS.get(0).addAll(Arrays.asList(0,0,0,0,1,0));
+        L_UGUNSKRUSTS.get(1).addAll(Arrays.asList(1,1,0,1,1,0));
+        L_UGUNSKRUSTS.get(2).addAll(Arrays.asList(0,1,1,1,0,0));
+        L_UGUNSKRUSTS.get(3).addAll(Arrays.asList(0,0,1,1,1,0));
+        L_UGUNSKRUSTS.get(4).addAll(Arrays.asList(0,1,1,0,1,1));
+        L_UGUNSKRUSTS.get(5).addAll(Arrays.asList(0,1,0,0,0,0));
+        constants[3] = L_UGUNSKRUSTS;
+        final ArrayList<ArrayList<Integer>> KRUSTS = new ArrayList<>(4);
+        while (KRUSTS.size() < 4) {
+            KRUSTS.add(new ArrayList<Integer>());
+        }
+        KRUSTS.get(0).addAll(Arrays.asList(0,1,1,0));
+        KRUSTS.get(1).addAll(Arrays.asList(1,1,1,1));
+        KRUSTS.get(2).addAll(Arrays.asList(1,1,1,1));
+        KRUSTS.get(3).addAll(Arrays.asList(0,1,1,0));
+        constants[4] = KRUSTS;
+        final ArrayList<ArrayList<Integer>> ZALKTIS = new ArrayList<>(4);
+        while (ZALKTIS.size() < 4) {
+            ZALKTIS.add(new ArrayList<Integer>());
+        }
+        ZALKTIS.get(0).addAll(Arrays.asList(0,1,1,0,0,0,0,0));
+        ZALKTIS.get(1).addAll(Arrays.asList(1,0,0,1,0,0,1,0));
+        ZALKTIS.get(2).addAll(Arrays.asList(0,1,0,0,1,0,0,1));
+        ZALKTIS.get(3).addAll(Arrays.asList(0,0,0,0,0,1,1,0));
+        constants[5] = ZALKTIS;
         return constants;
     }
 
@@ -146,10 +157,7 @@ public class MainGenerator {
     }
 
     // ģenerē ornamentu
-    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level, Boolean repeatMiddle) {
-        if (repeatMiddle == null) {
-            repeatMiddle = true;
-        }
+    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level) {
         ArrayList<ArrayList<Integer>> image = (ArrayList) prevImage.clone(); // izveido rakstāmu kopiju
         int middle = (int) Math.floor(prevImage.size() / 2); // norāda vidu, kas atkārtojams divreiz
         int rowLength = prevImage.get(0).size() * 2; // norāda vajadzīgo rindas garumu šim līmenim
@@ -163,7 +171,7 @@ public class MainGenerator {
                 image.get(i).add(j, prevImage.get(i).get(j)); // atkārto katru elementu divreiz
             }
         }
-        if (level > 1 && repeatMiddle) {
+        if (level > 1) {
             image.add(middle + 1, image.get(middle)); // atkārto vidu divreiz
         }
         ArrayList<ArrayList<Integer>> net = genNet(image.get(1).size(), inverse); // ģenerē tīklu ornamentam
@@ -176,11 +184,7 @@ public class MainGenerator {
                 netIndex = 0;
             }
         }
-        if (repeatMiddle) {
-            image.add((ArrayList) net.get(netIndex == 1 ? 0 : 1).clone());
-        } else {
-            image.add((ArrayList) net.get(netIndex).clone());
-        }
+        image.add((ArrayList) net.get(netIndex == 1 ? 0 : 1).clone());
         return image;
     }
 

@@ -66,6 +66,10 @@ public class MainActivity extends ActionBarActivity {
                     case R.id.krusts:
                         intent = new Intent(v.getContext(), KrustsActivity.class);
                         v.getContext().startActivity(intent);
+                        break;
+                    case R.id.zalktis:
+                        intent = new Intent(v.getContext(), ZalktisActivity.class);
+                        v.getContext().startActivity(intent);
                 }
             }
         });
@@ -176,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
 
         public void updateImage(boolean inverse) {
             this.prevImage = this.image;
-            this.image = MainGenerator.genFractal(this.image, inverse, this.level + 1, null);
+            this.image = MainGenerator.genFractal(this.image, inverse, this.level + 1);
             this.level += 1;
         }
 

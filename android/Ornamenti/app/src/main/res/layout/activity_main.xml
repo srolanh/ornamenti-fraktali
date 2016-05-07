@@ -42,6 +42,12 @@
             android:text="@string/krusts"
             android:id="@+id/krusts" />
 
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/zalktis"
+            android:id="@+id/zalktis" />
+
     </RadioGroup>
 
     <Button
@@ -60,19 +66,19 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true" >
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/action_info"
-        android:id="@+id/action_info" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_info"
+            android:id="@+id/action_info" />
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/action_settings"
-        android:id="@+id/action_settings" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_settings"
+            android:id="@+id/action_settings" />
 
     </LinearLayout>
 

@@ -25,6 +25,7 @@
         <activity android:name=".MUgunskrustsActivity" android:label="@string/app_name" />
         <activity android:name=".LUgunskrustsActivity" android:label="@string/app_name" />
         <activity android:name=".KrustsActivity" android:label="@string/app_name" />
+        <activity android:name=".ZalktisActivity" android:label="@string/app_name" />
         <activity android:name=".SettingsActivity" android:label="@string/action_settings" />
     </application>
 

@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="gen_kiegelis" type="id" />
-    <item name="gen_inverse_kiegelis" type="id" />
-    <item name="gen_ugunskrusts" type="id" />
-    <item name="gen_inverse_ugunskrusts" type="id" />
-    <item name="gen_m_ugunskrusts" type="id" />
-    <item name="gen_inverse_m_ugunskrusts" type="id" />
-    <item name="gen_l_ugunskrusts" type="id" />
-    <item name="gen_inverse_l_ugunskrusts" type="id" />
-    <item name="gen_krusts" type="id" />
-    <item name="gen_inverse_krusts" type="id" />
-    <item name="gen_zalktis" type="id" />
-    <item name="gen_inverse_zalktis" type="id" />
+    <item name="gen_btn" type="id" />
+    <item name="gen_inverse_btn" type="id" />
 </resources>

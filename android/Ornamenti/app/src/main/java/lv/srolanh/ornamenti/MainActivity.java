@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -87,7 +88,8 @@ public class MainActivity extends ActionBarActivity {
                                 "4. Ja nepieciešams, spied un turi, lai saglabātu ornamentu")
                         .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {}
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -108,8 +110,8 @@ public class MainActivity extends ActionBarActivity {
             size.x = display.getWidth();
             size.y = display.getHeight();
         }
-        this.dimensions[0] = size.x;
-        this.dimensions[1] = size.y;
+        dimensions[0] = size.x;
+        dimensions[1] = size.y;
     }
 
     public static boolean[] getExternalStorageState() {
@@ -159,7 +161,7 @@ public class MainActivity extends ActionBarActivity {
                     Log.w("FileOperation", "Possible problem with directory creation");
                 }
             }
-            String timestamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+            String timestamp = new SimpleDateFormat("ddMMyyyy_HHmm", Locale.US).format(new Date());
             File storageFile;
             int counter = 0;
             String filename = "Ornaments_" + timestamp + "_" + counter + ".png";
@@ -187,12 +189,12 @@ public class MainActivity extends ActionBarActivity {
         public void saveImage(Context context) {
             File imageFile = getStorageFile();
             if (imageFile == null) {
-                 return;
+                return;
             }
             try {
                 FileOutputStream output = new FileOutputStream(imageFile);
                 this.bitmap.compress(Bitmap.CompressFormat.PNG, 90, output);
-                MediaScannerConnection.scanFile(context, new String[] {imageFile.getPath()}, null,
+                MediaScannerConnection.scanFile(context, new String[]{imageFile.getPath()}, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
                             @Override
                             public void onScanCompleted(String path, Uri uri) {
@@ -217,6 +219,5 @@ public class MainActivity extends ActionBarActivity {
                 canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
             }
         }
-
     }
 }

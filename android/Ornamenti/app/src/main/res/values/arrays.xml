@@ -3,7 +3,7 @@
     <string-array name="color_list">
         <item>Sarkans</item>
         <item>Dzeltens</item>
-        <item>Zaļš</item>]
+        <item>Zaļš</item>
         <item>Gaiši zils</item>
         <item>Zils</item>
         <item>Violets</item>
@@ -19,5 +19,8 @@
         <item>#FF00FF</item>
         <item>#FFFFFF</item>
         <item>#000000</item>
+    </string-array>
+    <string-array name="save_options">
+        <item>Saglabāt rakstu</item>
     </string-array>
 </resources>

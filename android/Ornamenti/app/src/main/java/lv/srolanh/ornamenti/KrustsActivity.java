@@ -1,82 +1,17 @@
 package lv.srolanh.ornamenti;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-
-import java.util.ArrayList;
 
 /**
- * Created by srolanh on 16.22
+ * Created by srolanh on 16.22.4
  *
  */
-public class KrustsActivity extends ActionBarActivity {
+public class KrustsActivity extends OrnamentActivity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.setOrnamentParams(OrnamentActivity.KRUSTS_ORN_INDEX, "Krusts");
         super.onCreate(savedInstanceState);
-
-        FrameLayout layout = new FrameLayout(this);
-        layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        final MainActivity.OrnamentView krusts = new MainActivity.OrnamentView(this);
-        ArrayList[] constants = MainGenerator.init();
-        krusts.setImage(constants[4], 0);
-        krusts.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        krusts.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.d("krusts", "Registered long press");
-                krusts.saveImage(v.getContext());
-                return true;
-            }
-        });
-
-        RelativeLayout buttonLayout = new RelativeLayout(this);
-        RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lparams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-
-        Button genInverse = new Button(this);
-        genInverse.setText("Ģenerēt inverso");
-        RelativeLayout.LayoutParams genInverseParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        genInverseParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        genInverseParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        genInverse.setLayoutParams(genInverseParams);
-        genInverse.setId(R.id.gen_inverse_krusts);
-        genInverse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                krusts.updateImage(true);
-                krusts.invalidate();
-            }
-        });
-
-        Button gen = new Button(this);
-        gen.setText("Ģenerēt parasto");
-        RelativeLayout.LayoutParams genParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        genParams.addRule(RelativeLayout.ABOVE, R.id.gen_inverse_krusts);
-        genParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        gen.setLayoutParams(genParams);
-        gen.setId(R.id.gen_krusts);
-        gen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                krusts.updateImage(false);
-                krusts.invalidate();
-            }
-        });
-
-        buttonLayout.addView(gen);
-        buttonLayout.addView(genInverse);
-        layout.addView(krusts);
-        layout.addView(buttonLayout);
-        setContentView(layout);
     }
     
 }

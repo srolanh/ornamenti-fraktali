@@ -14,13 +14,14 @@ import java.util.ArrayList;
 /**
  * Created by srolanh on 16.6.4.
  */
-public class KiegelisActivity extends ActionBarActivity {
+public class KiegelisActivity extends OrnamentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.setOrnamentParams(OrnamentActivity.KIEGELIS_ORN_INDEX, "Kiegelis");
         super.onCreate(savedInstanceState);
 
-        FrameLayout layout = new FrameLayout(this);
+        /*FrameLayout layout = new FrameLayout(this);
         layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         final MainActivity.OrnamentView kiegelis = new MainActivity.OrnamentView(this);
@@ -75,7 +76,7 @@ public class KiegelisActivity extends ActionBarActivity {
         buttonLayout.addView(genInverse);
         layout.addView(kiegelis);
         layout.addView(buttonLayout);
-        setContentView(layout);
+        setContentView(layout);*/
     }
 
 }

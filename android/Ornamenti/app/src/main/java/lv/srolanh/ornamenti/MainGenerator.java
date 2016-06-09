@@ -115,7 +115,7 @@ public class MainGenerator {
             xWidth = widthPersistent;
             yHeight += rSize;
         }
-        Log.i("Graphics", "Drew " + image.size() + " rows, " + image.get(0).size() + " columns of size " + rSize);
+        //Log.i("Graphics", "Drew " + image.size() + " rows, " + image.get(0).size() + " columns of size " + rSize);
     }
 
     public static ArrayList genNet(int size, boolean inverse) {

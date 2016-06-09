@@ -41,7 +41,7 @@ public class OrnamentActivity extends ActionBarActivity {
             @Override
             public boolean onLongClick(View v) {
                 vGlobal = v;
-                Log.d(OrnamentActivity.this.ornName, "Registered long press");
+                //Log.d(OrnamentActivity.this.ornName, "Registered long press");
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setItems(R.array.save_options, new DialogInterface.OnClickListener() {
                     @Override
@@ -49,7 +49,7 @@ public class OrnamentActivity extends ActionBarActivity {
                         if (which == 0) {
                             vOrnament.saveImage(vGlobal.getContext());
                         } else {
-                            Log.e(OrnamentActivity.this.ornName, "Unknown option in context dialog");
+                            //Log.e(OrnamentActivity.this.ornName, "Unknown option in context dialog");
                         }
                     }
                 });

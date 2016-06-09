@@ -148,17 +148,17 @@ public class MainActivity extends ActionBarActivity {
         private static File getStorageFile() {
             boolean[] storageState = getExternalStorageState();
             if (!storageState[0]) {
-                Log.e("FileOperation", "Storage is not available!");
+                //Log.e("FileOperation", "Storage is not available!");
                 return null;
             } else if (!storageState[1]) {
-                Log.w("FileOperation", "Storage is not writable!");
+                //Log.w("FileOperation", "Storage is not writable!");
             }
             File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Ornamenti");
             if (!directory.exists()) {
                 if (directory.mkdirs()) {
-                    Log.i("FileOperation", "Directory created successfully");
+                    //Log.i("FileOperation", "Directory created successfully");
                 } else {
-                    Log.w("FileOperation", "Possible problem with directory creation");
+                    //Log.w("FileOperation", "Possible problem with directory creation");
                 }
             }
             String timestamp = new SimpleDateFormat("ddMMyyyy_HHmm", Locale.US).format(new Date());
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity {
                         new MediaScannerConnection.OnScanCompletedListener() {
                             @Override
                             public void onScanCompleted(String path, Uri uri) {
-                                Log.i("FileOperation", "Scanned file to media successfully");
+                                //Log.i("FileOperation", "Scanned file to media successfully");
                             }
                         }
                 );

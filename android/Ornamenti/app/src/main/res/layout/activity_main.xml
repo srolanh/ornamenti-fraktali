@@ -55,8 +55,8 @@
         android:layout_height="wrap_content"
         android:text="@string/action_gen"
         android:id="@+id/action_gen"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/group" />
 
     <LinearLayout
         android:layout_width="match_parent"

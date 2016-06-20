@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -71,6 +72,9 @@ public class MainActivity extends ActionBarActivity {
                     case R.id.zalktis:
                         intent = new Intent(v.getContext(), ZalktisActivity.class);
                         v.getContext().startActivity(intent);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Undefined checked radio button value");
                 }
             }
         });
@@ -136,13 +140,40 @@ public class MainActivity extends ActionBarActivity {
 
         public ArrayList<ArrayList<Integer>> image, prevImage;
         public int level;
+        public boolean repeatMiddle;
+        public boolean repeatMulti;
+        private int screenWidth;
+        private int screenHeight;
+        private SharedPreferences preferences;
+        private String prefRepeatMethod;
         private Bitmap bitmap;
+        private Bitmap scaledBitmap;
         private static final Paint bitmapPaint = new Paint();
         private final Context context;
 
         public OrnamentView(Context context) {
             super(context);
             this.context = context;
+            this.screenWidth = dimensions[0];
+            this.screenHeight = dimensions[1];
+            this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            this.prefRepeatMethod = preferences.getString("pref_gen_repeat", "MIDDLE");
+            switch (this.prefRepeatMethod) {
+                case "NONE":
+                    repeatMiddle = false;
+                    repeatMulti = false;
+                    break;
+                case "MIDDLE":
+                    repeatMiddle = true;
+                    repeatMulti = false;
+                    break;
+                case "MULTI":
+                    repeatMiddle = true;
+                    repeatMulti = true;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Undefined argument for repeat method value");
+            }
         }
 
         private static File getStorageFile() {
@@ -182,7 +213,8 @@ public class MainActivity extends ActionBarActivity {
 
         public void updateImage(boolean inverse) {
             this.prevImage = this.image;
-            this.image = MainGenerator.genFractal(this.image, inverse, this.level + 1);
+            this.image = MainGenerator.genFractal(this.image, inverse, this.level + 1,
+                    repeatMiddle, repeatMulti);
             this.level += 1;
         }
 

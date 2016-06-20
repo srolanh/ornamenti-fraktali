@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Ornamenti</string>
-    <string name="version">v0.4.3 BETA</string>
+    <string name="version">v0.5.0 BETA</string>
     <string name="kiegelis">Ķieģelis</string>
     <string name="ugunskrusts">Mazais ugunskrusts</string>
     <string name="mugunskrusts">Māras ugunskrunsts</string>
@@ -14,7 +14,10 @@
     <string name="action_gen_next_inverse">Ģenerēt inverso</string>
     <string name="pref_title_color1">Raksta rūtiņu krāsa</string>
     <string name="pref_title_color0">Tukšo rūtiņu krāsa</string>
+    <string name="pref_title_gen_repeat">Rindu atkārtošana</string>
     <string name="pref_dialog_color_select">Izvēlēties krāsu</string>
+    <string name="pref_dialog_method_select">Izvēlēties metodi</string>
     <string name="pref_default_color1">#0000FF</string>
     <string name="pref_default_color0">#FFFFFF</string>
+    <string name="pref_default_repeat_value">MIDDLE</string>
 </resources>

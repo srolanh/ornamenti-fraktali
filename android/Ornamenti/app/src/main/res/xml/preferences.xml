@@ -19,4 +19,12 @@
         android:entryValues="@array/color_value_list"
         android:defaultValue="@string/pref_default_color0" />
 
+    <ListPreference
+        android:key="pref_gen_repeat"
+        android:title="@string/pref_title_gen_repeat"
+        android:dialogTitle="@string/pref_dialog_method_select"
+        android:entries="@array/repeat_method_list"
+        android:entryValues="@array/repeat_method_value_list"
+        android:defaultValue="@string/pref_default_repeat_value" />
+
 </PreferenceScreen>

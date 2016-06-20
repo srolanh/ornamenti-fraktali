@@ -157,9 +157,12 @@ public class MainGenerator {
     }
 
     // ģenerē ornamentu
-    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level) {
+    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse,
+                                       int level, boolean repeatMiddle, boolean repeatMulti) {
         ArrayList<ArrayList<Integer>> image = (ArrayList) prevImage.clone(); // izveido rakstāmu kopiju
-        int middle = (int) Math.floor(prevImage.size() / 2); // norāda vidu, kas atkārtojams divreiz
+        int middle = (int) Math.floor(prevImage.size()) / 2; // norāda vidu, kas atkārtojams divreiz
+        int multi1 = (int) (Math.floor(prevImage.size() / 4) - 1); // norāda pirmo ceturtdaļu
+        int multi2 = (int) (Math.ceil(prevImage.size() * 0.75) + 2); // norāda trešo ceturtdaļu
         int rowLength = prevImage.get(0).size() * 2; // norāda vajadzīgo rindas garumu šim līmenim
         int i;
         int j;
@@ -171,8 +174,12 @@ public class MainGenerator {
                 image.get(i).add(j, prevImage.get(i).get(j)); // atkārto katru elementu divreiz
             }
         }
-        if (level > 1) {
+        if (level > 1 && repeatMiddle) {
             image.add(middle + 1, image.get(middle)); // atkārto vidu divreiz
+        }
+        if (level > 2 && repeatMulti) {
+            image.add(multi1 + 1, image.get(multi1)); // atkārto pirmo ceturtdaļu
+            image.add(multi2 + 1, image.get(multi2)); // atkārto trešo ceturtdaļu
         }
         ArrayList<ArrayList<Integer>> net = genNet(image.get(1).size(), inverse); // ģenerē tīklu ornamentam
         int netIndex = 0; // norāda, kura tīkla rinda jāievieto
@@ -188,24 +195,15 @@ public class MainGenerator {
         return image;
     }
 
-// māras ugunskrusts
-/*i = [
-[0,0,0,0,0,1,0,0,0,0],
-[0,0,0,0,1,1,0,0,0,0],
-[0,0,1,1,1,0,0,1,0,0],
-[0,0,0,1,1,0,1,1,0,0],
-[1,1,0,0,1,1,1,1,1,0],
-[0,1,1,1,1,1,0,0,1,1],
-[0,0,1,1,0,1,1,0,0,0],
-[0,0,1,0,0,1,1,1,0,0],
-[0,0,0,0,1,1,0,0,0,0],
-[0,0,0,0,1,0,0,0,0,0]
-];*/
+    // definēt funkciju bez repeatMulti argumenta
+    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse,
+                                       int level, boolean repeatMiddle) {
+        return genFractal(prevImage, inverse, level, repeatMiddle, false);
+    }
 
-// ugunskrusts
-// i = [[0,0,1,0],[1,1,1,0],[0,1,1,1],[0,1,0,0]]
-
-// ķieģelis
-// i = [[0,1,1,0],[0,1,1,0]];
+    // definēt funkciju bez repeatMiddle, repeatMulti argumentiem
+    public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level) {
+        return genFractal(prevImage, inverse, level, true, false);
+    }
 
 }

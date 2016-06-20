@@ -1,3 +1,3 @@
 ornamenti-fraktali
 ==================
-Latviešu fraktālisko ornamentu zīmēšanas rīks (HTML+JS)
+Latviešu fraktālisko ornamentu zīmēšanas rīks (HTML+JS & Android aplikācija)

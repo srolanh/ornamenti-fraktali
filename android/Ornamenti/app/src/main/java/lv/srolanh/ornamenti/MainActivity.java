@@ -14,8 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static int[] dimensions = new int[2];
 
@@ -41,71 +40,83 @@ public class MainActivity extends ActionBarActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Button gen = (Button) findViewById(R.id.action_gen);
         final RadioGroup group = (RadioGroup) findViewById(R.id.group);
-        gen.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                int checkedId = group.getCheckedRadioButtonId();
-                switch (checkedId) {
-                    case -1:
-                        break;
-                    case R.id.kiegelis:
-                        intent = new Intent(v.getContext(), KiegelisActivity.class);
-                        v.getContext().startActivity(intent);
-                        break;
-                    case R.id.ugunskrusts:
-                        intent = new Intent(v.getContext(), UgunskrustsActivity.class);
-                        v.getContext().startActivity(intent);
-                        break;
-                    case R.id.mugunskrusts:
-                        intent = new Intent(v.getContext(), MUgunskrustsActivity.class);
-                        v.getContext().startActivity(intent);
-                        break;
-                    case R.id.l_ugunskrusts:
-                        intent = new Intent(v.getContext(), LUgunskrustsActivity.class);
-                        v.getContext().startActivity(intent);
-                        break;
-                    case R.id.krusts:
-                        intent = new Intent(v.getContext(), KrustsActivity.class);
-                        v.getContext().startActivity(intent);
-                        break;
-                    case R.id.zalktis:
-                        intent = new Intent(v.getContext(), ZalktisActivity.class);
-                        v.getContext().startActivity(intent);
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Undefined checked radio button value");
+        if (gen != null) {
+            gen.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    int checkedId;
+                    if (group != null) {
+                        checkedId = group.getCheckedRadioButtonId();
+                    } else {
+                        checkedId = -1;
+                    }
+                    switch (checkedId) {
+                        case -1:
+                            break;
+                        case R.id.kiegelis:
+                            intent = new Intent(v.getContext(), KiegelisActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
+                        case R.id.ugunskrusts:
+                            intent = new Intent(v.getContext(), UgunskrustsActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
+                        case R.id.mugunskrusts:
+                            intent = new Intent(v.getContext(), MUgunskrustsActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
+                        case R.id.l_ugunskrusts:
+                            intent = new Intent(v.getContext(), LUgunskrustsActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
+                        case R.id.krusts:
+                            intent = new Intent(v.getContext(), KrustsActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
+                        case R.id.zalktis:
+                            intent = new Intent(v.getContext(), ZalktisActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Undefined checked radio button value");
+                    }
                 }
-            }
-        });
+            });
+        }
         Button info = (Button) findViewById(R.id.action_info);
         Button settings = (Button) findViewById(R.id.action_settings);
-        info.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Info")
-                        .setMessage("Latviešu ornamentu ģenerators pēc fraktāliskiem principiem\n\n" +
-                                "1. Izvēlies sākuma stāvokli no iespējamajiem stāvokļiem\n\n" +
-                                "2. Nospied \"Ģenerēt\"\n\n" +
-                                "3. Spied pogas, lai ģenerētu nākamā līmeņa ornamentus\n\n" +
-                                "4. Ja nepieciešams, spied un turi, lai saglabātu ornamentu")
-                        .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-        settings.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SettingsActivity.class);
-                v.getContext().startActivity(intent);
-            }
-        });
+        if (info != null) {
+            info.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setTitle("Info")
+                            .setMessage("Latviešu ornamentu ģenerators pēc fraktāliskiem principiem\n\n" +
+                                    "1. Izvēlies sākuma stāvokli no iespējamajiem stāvokļiem\n\n" +
+                                    "2. Nospied \"Ģenerēt\"\n\n" +
+                                    "3. Spied pogas, lai ģenerētu nākamā līmeņa ornamentus\n\n" +
+                                    "3. Spied pogas, lai ģenerētu nākamā līmeņa ornamentus\n\n" +
+                                    "4. Ja nepieciešams, spied un turi, lai saglabātu ornamentu")
+                            .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
+        }
+        if (settings != null) {
+            settings.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), SettingsActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         if (android.os.Build.VERSION.SDK_INT >= 13) {
@@ -138,10 +149,11 @@ public class MainActivity extends ActionBarActivity {
 
     public static class OrnamentView extends View {
 
-        public ArrayList<ArrayList<Integer>> image, prevImage;
-        public int level;
+        private ArrayList<ArrayList<Integer>> image, prevImage;
+        private int level;
+        private ArrayList<ArrayList<Integer>> defaultImage;
         public boolean repeatMiddle;
-        public boolean repeatMulti;
+        public boolean repeatQuarter;
         private int screenWidth;
         private int screenHeight;
         private SharedPreferences preferences;
@@ -161,28 +173,31 @@ public class MainActivity extends ActionBarActivity {
             switch (this.prefRepeatMethod) {
                 case "NONE":
                     repeatMiddle = false;
-                    repeatMulti = false;
+                    repeatQuarter = false;
                     break;
                 case "MIDDLE":
                     repeatMiddle = true;
-                    repeatMulti = false;
+                    repeatQuarter = false;
                     break;
-                case "MULTI":
+                case "QUARTER":
                     repeatMiddle = true;
-                    repeatMulti = true;
+                    repeatQuarter = true;
                     break;
                 default:
                     throw new IllegalArgumentException("Undefined argument for repeat method value");
             }
+            this.defaultImage = new ArrayList<>(1);
+            this.defaultImage.add(new ArrayList<Integer>(1));
+            this.defaultImage.get(0).add(1);
         }
 
-        private static File getStorageFile() {
+        private File getStorageFile() {
             boolean[] storageState = getExternalStorageState();
             if (!storageState[0]) {
-                //Log.e("FileOperation", "Storage is not available!");
+                Toast.makeText(this.context, "Atmiņa nav pieejama", Toast.LENGTH_SHORT).show();
                 return null;
             } else if (!storageState[1]) {
-                //Log.w("FileOperation", "Storage is not writable!");
+                Toast.makeText(this.context, "Atmiņa nav rakstāma", Toast.LENGTH_SHORT).show();
             }
             File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Ornamenti");
             if (!directory.exists()) {
@@ -207,14 +222,22 @@ public class MainActivity extends ActionBarActivity {
 
         public void setImage(ArrayList<ArrayList<Integer>> image, int level) {
             this.image = image;
-            this.prevImage = image;
+            this.prevImage = this.defaultImage;
             this.level = level;
+        }
+
+        public ArrayList<ArrayList<Integer>> getImage() {
+            return this.image;
+        }
+
+        public int getLevel() {
+            return this.level;
         }
 
         public void updateImage(boolean inverse) {
             this.prevImage = this.image;
             this.image = MainGenerator.genFractal(this.image, inverse, this.level + 1,
-                    repeatMiddle, repeatMulti);
+                    repeatMiddle, repeatQuarter);
             this.level += 1;
         }
 

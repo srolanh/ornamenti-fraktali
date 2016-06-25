@@ -1,12 +1,13 @@
 package lv.srolanh.ornamenti;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,10 @@ import java.util.Arrays;
  */
 public class MainGenerator {
 
-    public static ArrayList[] init() {
+    private static Context context;
+
+    public static ArrayList[] init(Context ctx) {
+        context = ctx;
         ArrayList[] constants = new ArrayList[6];
         final ArrayList<ArrayList<Integer>> KIEGELIS = new ArrayList<>(2);
         while (KIEGELIS.size() < 2) {
@@ -158,50 +162,64 @@ public class MainGenerator {
 
     // ģenerē ornamentu
     public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse,
-                                       int level, boolean repeatMiddle, boolean repeatMulti) {
-        ArrayList<ArrayList<Integer>> image = (ArrayList) prevImage.clone(); // izveido rakstāmu kopiju
-        int middle = (int) Math.floor(prevImage.size()) / 2; // norāda vidu, kas atkārtojams divreiz
-        int multi1 = (int) (Math.floor(prevImage.size() / 4) - 1); // norāda pirmo ceturtdaļu
-        int multi2 = (int) (Math.ceil(prevImage.size() * 0.75) + 2); // norāda trešo ceturtdaļu
-        int rowLength = prevImage.get(0).size() * 2; // norāda vajadzīgo rindas garumu šim līmenim
-        int i;
-        int j;
-        for (i = prevImage.size() - 1; i >= 0; i--) {
-            if (image.get(i).size() == rowLength) {
-                continue;
+                                       int level, boolean repeatMiddle, boolean repeatQuarter) {
+        ArrayList<ArrayList<Integer>> image;
+        try {
+            image = (ArrayList) prevImage.clone(); // izveido rakstāmu kopiju
+            int middle = (int) Math.floor(prevImage.size()) / 2; // norāda vidu, kas atkārtojams divreiz
+            int quarter1 = (int) (Math.floor(prevImage.size() / 4) - 1); // norāda pirmo ceturtdaļu
+            int quarter2 = (int) (Math.ceil(prevImage.size() * 0.75) + 2); // norāda trešo ceturtdaļu
+            int rowLength = prevImage.get(0).size() * 2; // norāda vajadzīgo rindas garumu šim līmenim
+            int i;
+            int j;
+            for (i = prevImage.size() - 1; i >= 0; i--) {
+                if (image.get(i).size() == rowLength) {
+                    continue;
+                }
+                for (j = prevImage.get(i).size() - 1; j >= 0; j--) { // cikls pār katras rindas image[i] kartru elementu image[i][j]
+                    image.get(i).add(j, prevImage.get(i).get(j)); // atkārto katru elementu divreiz
+                }
             }
-            for (j = prevImage.get(i).size() - 1; j >= 0; j--) { // cikls pār katras rindas image[i] kartru elementu image[i][j]
-                image.get(i).add(j, prevImage.get(i).get(j)); // atkārto katru elementu divreiz
+            if (level > 1 && repeatMiddle) {
+                image.add(middle + 1, image.get(middle)); // atkārto vidu divreiz
             }
-        }
-        if (level > 1 && repeatMiddle) {
-            image.add(middle + 1, image.get(middle)); // atkārto vidu divreiz
-        }
-        if (level > 2 && repeatMulti) {
-            image.add(multi1 + 1, image.get(multi1)); // atkārto pirmo ceturtdaļu
-            image.add(multi2 + 1, image.get(multi2)); // atkārto trešo ceturtdaļu
-        }
-        ArrayList<ArrayList<Integer>> net = genNet(image.get(1).size(), inverse); // ģenerē tīklu ornamentam
-        int netIndex = 0; // norāda, kura tīkla rinda jāievieto
-        for (i = image.size() - 1; i >= 0; i--) {
-            image.add(i, (ArrayList) net.get(netIndex).clone()); // ievieto vajadzīgo tīkla rindu
-            if (netIndex == 0) {
-                netIndex = 1;
-            } else {
-                netIndex = 0;
+            if (level > 2 && repeatQuarter) {
+                image.add(quarter1 + 1, image.get(quarter1)); // atkārto pirmo ceturtdaļu
+                image.add(quarter2 + 1, image.get(quarter2)); // atkārto trešo ceturtdaļu
             }
+            ArrayList<ArrayList<Integer>> net = genNet(image.get(1).size(), inverse); // ģenerē tīklu ornamentam
+            int netIndex = 0; // norāda, kura tīkla rinda jāievieto
+            for (i = image.size() - 1; i >= 0; i--) {
+                image.add(i, (ArrayList) net.get(netIndex).clone()); // ievieto vajadzīgo tīkla rindu
+                if (netIndex == 0) {
+                    netIndex = 1;
+                } else {
+                    netIndex = 0;
+                }
+            }
+            image.add((ArrayList) net.get(netIndex == 1 ? 0 : 1).clone());
+        } catch (OutOfMemoryError oom) {
+            image = prevImage;
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Kļūda")
+                    .setMessage("Pārāk liels ornaments\nOrnamenta lielums pārsniedz brīvo vietu atmiņā")
+                    .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-        image.add((ArrayList) net.get(netIndex == 1 ? 0 : 1).clone());
         return image;
     }
 
-    // definēt funkciju bez repeatMulti argumenta
+    // definēt funkciju bez repeatQuarter argumenta
     public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse,
                                        int level, boolean repeatMiddle) {
         return genFractal(prevImage, inverse, level, repeatMiddle, false);
     }
 
-    // definēt funkciju bez repeatMiddle, repeatMulti argumentiem
+    // definēt funkciju bez repeatMiddle, repeatQuarter argumentiem
     public static ArrayList genFractal(ArrayList<ArrayList<Integer>> prevImage, boolean inverse, int level) {
         return genFractal(prevImage, inverse, level, true, false);
     }

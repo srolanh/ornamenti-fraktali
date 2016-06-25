@@ -28,7 +28,7 @@
     <string-array name="repeat_method_value_list">
         <item>NONE</item>
         <item>MIDDLE</item>
-        <item>MULTI</item>
+        <item>QUARTER</item>
     </string-array>
     <string-array name="save_options">
         <item>Saglabāt rakstu</item>

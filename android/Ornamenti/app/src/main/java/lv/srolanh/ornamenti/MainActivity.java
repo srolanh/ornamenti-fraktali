@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                                     "1. Izvēlies sākuma stāvokli no iespējamajiem stāvokļiem\n\n" +
                                     "2. Nospied \"Ģenerēt\"\n\n" +
                                     "3. Spied pogas, lai ģenerētu nākamā līmeņa ornamentus\n\n" +
-                                    "3. Spied pogas, lai ģenerētu nākamā līmeņa ornamentus\n\n" +
                                     "4. Ja nepieciešams, spied un turi, lai saglabātu ornamentu")
                             .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
                                 @Override

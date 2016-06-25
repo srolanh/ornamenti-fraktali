@@ -197,12 +197,16 @@ public class MainGenerator {
                     netIndex = 0;
                 }
             }
-            image.add((ArrayList) net.get(netIndex == 1 ? 0 : 1).clone());
+            if (level == 1 || repeatMiddle) {
+                image.add((ArrayList) net.get(netIndex == 1 ? 0 : 1).clone());
+            } else {
+                image.add((ArrayList) net.get(netIndex).clone());
+            }
         } catch (OutOfMemoryError oom) {
             image = prevImage;
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Kļūda")
-                    .setMessage("Pārāk liels ornaments\nOrnamenta lielums pārsniedz brīvo vietu atmiņā")
+                    .setMessage("\tPārāk liels ornaments\n\nOrnamenta lielums pārsniedz brīvo vietu atmiņā")
                     .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {}

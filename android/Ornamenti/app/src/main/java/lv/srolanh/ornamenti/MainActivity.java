@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         private ArrayList<ArrayList<Integer>> image, prevImage;
         private int level;
+        private int imageID;
         private ArrayList<ArrayList<Integer>> defaultImage;
         public boolean repeatMiddle;
         public boolean repeatQuarter;
@@ -160,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
         private Bitmap bitmap;
         private Bitmap scaledBitmap;
         private static final Paint bitmapPaint = new Paint();
+        private Canvas bitmapCanvas;
+        private int rSize;
         private final Context context;
 
         public OrnamentView(Context context) {
@@ -219,10 +222,12 @@ public class MainActivity extends AppCompatActivity {
             return storageFile;
         }
 
-        public void setImage(ArrayList<ArrayList<Integer>> image, int level) {
+        public void setImage(ArrayList<ArrayList<Integer>> image, int level, int imageID) {
             this.image = image;
             this.prevImage = this.defaultImage;
             this.level = level;
+            this.imageID = imageID;
+            this.onImageChange();
         }
 
         public ArrayList<ArrayList<Integer>> getImage() {
@@ -238,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             this.image = MainGenerator.genFractal(this.image, inverse, this.level + 1,
                     repeatMiddle, repeatQuarter);
             this.level += 1;
+            this.onImageChange();
         }
 
         public void saveImage(Context context) {
@@ -263,6 +269,22 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        public void onImageChange() {
+            if (this.image == MainGenerator.errorHandler) {
+                this.setImage(MainGenerator.constants[this.imageID], 0, this.imageID);
+            } else {
+                this.rSize = (int) Math.floor(this.screenWidth / this.image.get(0).size());
+                if (this.rSize == 0) {
+                    this.rSize = 1;
+                }
+                int bitmapWidth = this.rSize * this.image.get(0).size();
+                int bitmapHeight = this.rSize * this.image.size();
+                this.bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.RGB_565);
+                this.bitmapCanvas = new Canvas(this.bitmap);
+            }
+            this.invalidate();
+        }
+
         public Bitmap resizeBitmapToScreen(Bitmap bitmap, int screenWidth, int screenHeight) {
             float bitmapRatio = (float) bitmap.getWidth() / (float) bitmap.getHeight();
             float screenRatio = (float) screenWidth / (float) screenHeight;
@@ -281,27 +303,13 @@ public class MainActivity extends AppCompatActivity {
             super.onDraw(canvas);
             if (this.image != this.prevImage || this.level == 0) {
                 try {
-                    int rSize = (int) Math.floor(this.screenWidth / this.image.get(0).size());
-                    if (rSize == 0) {
-                        rSize = 1;
-                    }
-                    int bitmapWidth = rSize * this.image.get(0).size();
-                    int bitmapHeight = rSize * this.image.size();
-                    this.bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.RGB_565);
-                    Canvas bitmapCanvas = new Canvas(this.bitmap);
-                    MainGenerator.drawImage(this.context, bitmapCanvas, this.image, rSize);
+                    MainGenerator.drawImage(this.context, this.bitmapCanvas, this.image, this.rSize);
                     this.bitmap = resizeBitmapToScreen(this.bitmap, this.screenWidth, this.screenHeight);
                     canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
                 } catch (OutOfMemoryError oom) {
                     oom.printStackTrace();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-                    builder.setTitle("Kļūda")
-                            .setMessage("\tPārāk liels ornaments\n\nOrnamenta lielums pārsniedz brīvo vietu atmiņā")
-                            .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {}
-                            });
-                    builder.create().show();
+                    MainGenerator.showOutOfMemoryErrorDialog(this.context);
+                    //this.setImage(MainGenerator.errorHandler, 0, this.imageID);
                 }
             }
         }

@@ -49,12 +49,12 @@ public class OrnamentActivity extends AppCompatActivity {
         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         final MainActivity.OrnamentView vOrnament = new MainActivity.OrnamentView(this);
-        ArrayList[] constants = MainGenerator.init(vOrnament.getContext());
+        MainGenerator.init(vOrnament.getContext());
         if (this.isRestoredFromImage) {
-            vOrnament.setImage(this.image, this.level);
+            vOrnament.setImage(this.image, this.level, this.ornIndex);
         } else {
-            vOrnament.setImage(constants[this.ornIndex], 0);
-            this.image = constants[this.ornIndex];
+            vOrnament.setImage(MainGenerator.constants[this.ornIndex], 0, this.ornIndex);
+            this.image = MainGenerator.constants[this.ornIndex];
             this.level = 0;
         }
         vOrnament.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));

@@ -263,14 +263,46 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        public Bitmap resizeBitmapToScreen(Bitmap bitmap, int screenWidth, int screenHeight) {
+            float bitmapRatio = (float) bitmap.getWidth() / (float) bitmap.getHeight();
+            float screenRatio = (float) screenWidth / (float) screenHeight;
+            int width = screenWidth;
+            int height = screenHeight;
+            if (screenRatio > 1) {
+                width = (int) ((float) screenHeight * bitmapRatio);
+            } else {
+                height = (int) ((float) screenWidth / bitmapRatio);
+            }
+            return Bitmap.createScaledBitmap(bitmap, width, height, true);
+        }
+
         @Override
         public void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (this.image != this.prevImage || this.level == 0) {
-                this.bitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.RGB_565);
-                Canvas bitmapCanvas = new Canvas(this.bitmap);
-                MainGenerator.drawImage(this.context, bitmapCanvas, this.image);
-                canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
+                try {
+                    int rSize = (int) Math.floor(this.screenWidth / this.image.get(0).size());
+                    if (rSize == 0) {
+                        rSize = 1;
+                    }
+                    int bitmapWidth = rSize * this.image.get(0).size();
+                    int bitmapHeight = rSize * this.image.size();
+                    this.bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.RGB_565);
+                    Canvas bitmapCanvas = new Canvas(this.bitmap);
+                    MainGenerator.drawImage(this.context, bitmapCanvas, this.image, rSize);
+                    this.bitmap = resizeBitmapToScreen(this.bitmap, this.screenWidth, this.screenHeight);
+                    canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
+                } catch (OutOfMemoryError oom) {
+                    oom.printStackTrace();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+                    builder.setTitle("Kļūda")
+                            .setMessage("\tPārāk liels ornaments\n\nOrnamenta lielums pārsniedz brīvo vietu atmiņā")
+                            .setPositiveButton("Labi", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}
+                            });
+                    builder.create().show();
+                }
             }
         }
     }

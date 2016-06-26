@@ -85,15 +85,10 @@ public class MainGenerator {
         return constants;
     }
 
-    public static void drawImage(Context ctx, Canvas canvas, ArrayList<ArrayList<Integer>> image) {
-        int[] dimens = MainActivity.dimensions;
+    public static void drawImage(Context ctx, Canvas canvas, ArrayList<ArrayList<Integer>> image, int rSize) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         String colorPrimary = preferences.getString("pref_color1", "#0000FF");
         String colorSecondary = preferences.getString("pref_color0", "#FFFFFF");
-        int rSize = dimens[0] / image.get(0).size();
-        if (rSize == 0) {
-            rSize = 1;
-        }
         int xWidth = 0;
         int yHeight = 0;
         int widthPersistent = xWidth;

@@ -33,6 +33,7 @@ public class OrnamentActivity extends AppCompatActivity {
     public ArrayList<ArrayList<Integer>> image;
     public int level;
     private View vGlobal;
+    private MainGenerator generator;
     private boolean isRestoredFromImage;
     
     public void onCreate(Bundle savedInstanceState) {
@@ -45,16 +46,16 @@ public class OrnamentActivity extends AppCompatActivity {
                 this.level = savedInstanceState.getInt("level");
             }
         }
+        this.generator = new MainGenerator(this, this.ornIndex);
         FrameLayout layout = new FrameLayout(this);
         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        final MainActivity.OrnamentView vOrnament = new MainActivity.OrnamentView(this);
-        MainGenerator.init(vOrnament.getContext());
+        final OrnamentView vOrnament = new OrnamentView(this);
         if (this.isRestoredFromImage) {
             vOrnament.setImage(this.image, this.level, this.ornIndex);
         } else {
-            vOrnament.setImage(MainGenerator.constants[this.ornIndex], 0, this.ornIndex);
-            this.image = MainGenerator.constants[this.ornIndex];
+            vOrnament.setImage(this.generator.constants[this.ornIndex], 0, this.ornIndex);
+            this.image = this.generator.constants[this.ornIndex];
             this.level = 0;
         }
         vOrnament.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));

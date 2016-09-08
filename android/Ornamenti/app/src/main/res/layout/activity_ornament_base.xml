@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/gen_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/gen_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/action_gen_next"
+            android:layout_weight="1">
+
+        </Button>
+
+        <Button
+            android:id="@+id/gen_inverse_btn"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/action_gen_next_inverse"
+            android:layout_weight="1">
+
+        </Button>
+
+    </LinearLayout>
+
+    <lv.srolanh.ornamenti.OrnamentView
+        android:id="@+id/ornament"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/gen_button_group">
+
+    </lv.srolanh.ornamenti.OrnamentView>
+
+</RelativeLayout>

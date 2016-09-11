@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                             v.getContext().startActivity(intent);
                             break;
                         default:
-                            throw new IllegalArgumentException("Undefined checked radio button value");
+                            throw new IllegalStateException("Undefined checked radio button value");
                     }
                 }
             });

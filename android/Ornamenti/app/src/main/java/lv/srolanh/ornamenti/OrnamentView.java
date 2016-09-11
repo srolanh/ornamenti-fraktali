@@ -2,6 +2,7 @@ package lv.srolanh.ornamenti;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,7 +44,15 @@ public class OrnamentView extends View {
     private final MainGenerator generator;
 
     public OrnamentView(Context context) {
-        super(context);
+        this(context, null, 0);
+    }
+
+    public OrnamentView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public OrnamentView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         this.context = context;
         this.generator = new MainGenerator(context);
         this.screenWidth = MainActivity.dimensions[0];
@@ -170,10 +180,24 @@ public class OrnamentView extends View {
         float screenRatio = (float) screenWidth / (float) screenHeight;
         int width = screenWidth;
         int height = screenHeight;
-        if (screenRatio > 1) {
-            width = (int) ((float) screenHeight * bitmapRatio);
-        } else {
-            height = (int) ((float) screenWidth / bitmapRatio);
+        int orientation = context.getResources().getConfiguration().orientation;
+        switch (orientation) {
+            case Configuration.ORIENTATION_PORTRAIT:
+                if (screenRatio > 1) {
+                    width = (int) ((float) screenHeight * bitmapRatio);
+                } else {
+                    height = (int) ((float) screenWidth / bitmapRatio);
+                }
+                break;
+            case Configuration.ORIENTATION_LANDSCAPE:
+                if (screenRatio < 1) {
+                    width = (int) ((float) screenHeight * bitmapRatio);
+                } else {
+                    height = (int) ((float) screenWidth / bitmapRatio);
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unknown orientation");
         }
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }

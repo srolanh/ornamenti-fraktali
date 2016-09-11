@@ -8,8 +8,8 @@ android {
         applicationId "lv.srolanh.ornamenti"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 14
-        versionName "0.5.9"
+        versionCode 15
+        versionName "0.5.10"
     }
     buildTypes {
         release {

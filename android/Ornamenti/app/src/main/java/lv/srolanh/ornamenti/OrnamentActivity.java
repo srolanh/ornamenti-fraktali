@@ -33,32 +33,29 @@ public class OrnamentActivity extends AppCompatActivity {
     public ArrayList<ArrayList<Integer>> image;
     public int level;
     private View vGlobal;
-    private MainGenerator generator;
-    private boolean isRestoredFromImage;
     
     public void onCreate(Bundle savedInstanceState) {
-        this.isRestoredFromImage = false;
+        boolean isRestoredFromImage = false;
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("image") && savedInstanceState.containsKey("level")) {
-                this.isRestoredFromImage = true;
+                isRestoredFromImage = true;
                 this.image = (ArrayList) savedInstanceState.getSerializable("image");
                 this.level = savedInstanceState.getInt("level");
             }
         }
-        this.generator = new MainGenerator(this, this.ornIndex);
-        FrameLayout layout = new FrameLayout(this);
-        layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        MainGenerator generator = new MainGenerator(this, this.ornIndex);
 
-        final OrnamentView vOrnament = new OrnamentView(this);
-        if (this.isRestoredFromImage) {
+        setContentView(R.layout.activity_ornament_base);
+
+        final OrnamentView vOrnament = (OrnamentView) findViewById(R.id.ornament);
+        if (isRestoredFromImage) {
             vOrnament.setImage(this.image, this.level, this.ornIndex);
         } else {
-            vOrnament.setImage(this.generator.constants[this.ornIndex], 0, this.ornIndex);
-            this.image = this.generator.constants[this.ornIndex];
+            vOrnament.setImage(generator.constants[this.ornIndex], 0, this.ornIndex);
+            this.image = generator.constants[this.ornIndex];
             this.level = 0;
         }
-        vOrnament.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         vOrnament.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -70,16 +67,14 @@ public class OrnamentActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             if (ContextCompat.checkSelfPermission(vGlobal.getContext(),
-                                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions((Activity) vGlobal.getContext(),
-                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                        1);
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                             }
                             if (ContextCompat.checkSelfPermission(vGlobal.getContext(),
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions((Activity) vGlobal.getContext(),
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        2);
+                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
                             }
                             vOrnament.saveImage(vGlobal.getContext());
                         } else {
@@ -93,50 +88,31 @@ public class OrnamentActivity extends AppCompatActivity {
             }
         });
 
-        RelativeLayout buttonLayout = new RelativeLayout(this);
-        RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lparams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        Button genInverse = (Button) findViewById(R.id.gen_btn);
+        if (genInverse != null) {
+            genInverse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vOrnament.updateImage(true);
+                    OrnamentActivity.this.image = vOrnament.getImage();
+                    OrnamentActivity.this.level = vOrnament.getLevel();
+                    vOrnament.invalidate();
+                }
+            });
+        }
 
-        Button genInverse = new Button(this);
-        genInverse.setText(R.string.action_gen_next_inverse);
-        RelativeLayout.LayoutParams genInverseParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        genInverseParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        genInverseParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        genInverse.setLayoutParams(genInverseParams);
-        genInverse.setId(R.id.gen_inverse_btn);
-        genInverse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vOrnament.updateImage(true);
-                OrnamentActivity.this.image = vOrnament.getImage();
-                OrnamentActivity.this.level = vOrnament.getLevel();
-                vOrnament.invalidate();
-            }
-        });
-
-        Button gen = new Button(this);
-        gen.setText(R.string.action_gen_next);
-        RelativeLayout.LayoutParams genParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        genParams.addRule(RelativeLayout.ABOVE, R.id.gen_inverse_btn);
-        genParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        gen.setLayoutParams(genParams);
-        gen.setId(R.id.gen_btn);
-        gen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vOrnament.updateImage(false);
-                OrnamentActivity.this.image = vOrnament.getImage();
-                OrnamentActivity.this.level = vOrnament.getLevel();
-                vOrnament.invalidate();
-            }
-        });
-
-        buttonLayout.addView(gen);
-        buttonLayout.addView(genInverse);
-        layout.addView(vOrnament);
-        layout.addView(buttonLayout);
-        setContentView(layout);
+        Button gen = (Button) findViewById(R.id.gen_inverse_btn);
+        if (gen != null) {
+            gen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vOrnament.updateImage(false);
+                    OrnamentActivity.this.image = vOrnament.getImage();
+                    OrnamentActivity.this.level = vOrnament.getLevel();
+                    vOrnament.invalidate();
+                }
+            });
+        }
     }
 
     @Override

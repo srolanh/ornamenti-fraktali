@@ -10,7 +10,11 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,7 +32,6 @@ public class OrnamentView extends View {
 
     private ArrayList<ArrayList<Integer>> image, prevImage;
     private int level;
-    private int imageID;
     private ArrayList<ArrayList<Integer>> defaultImage;
     public boolean repeatMiddle;
     public boolean repeatQuarter;
@@ -42,6 +45,9 @@ public class OrnamentView extends View {
     private int rSize;
     private final Context context;
     private final MainGenerator generator;
+    private ScaleGestureDetector sgd;
+    private float zoomFactor = 1.0f;
+    private boolean imageChanged;
 
     public OrnamentView(Context context) {
         this(context, null, 0);
@@ -78,6 +84,16 @@ public class OrnamentView extends View {
         this.defaultImage = new ArrayList<>(1);
         this.defaultImage.add(new ArrayList<Integer>(1));
         this.defaultImage.get(0).add(1);
+        this.sgd = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                zoomFactor *= detector.getScaleFactor();
+                zoomFactor = Math.max(1.0f, Math.min(zoomFactor, 5.0f));
+                ViewCompat.postInvalidateOnAnimation(OrnamentView.this);
+                return true;
+            }
+        });
+        this.imageChanged = true;
     }
 
     private File getStorageFile() {
@@ -113,7 +129,6 @@ public class OrnamentView extends View {
         this.image = image;
         this.prevImage = this.defaultImage;
         this.level = level;
-        this.imageID = imageID;
         this.generator.imageID = imageID;
         this.generator.setLevel(level);
         this.onImageChange();
@@ -172,6 +187,7 @@ public class OrnamentView extends View {
         } else if (this.generator.getLevel() != this.level) {
             this.generator.setLevel(this.level);
         }
+        this.imageChanged = (this.image != this.prevImage);
         this.invalidate();
     }
 
@@ -203,19 +219,31 @@ public class OrnamentView extends View {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        sgd.onTouchEvent(e);
+        return true;
+    }
+
+    @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (this.image != this.prevImage || this.level == 0) {
-            try {
+        canvas.save();
+        canvas.scale(zoomFactor, zoomFactor);
+        try {
+            if (this.imageChanged) {
+                Log.d("Graphics", "Recalculating image");
                 MainGenerator.drawImage(this.context, this.bitmapCanvas, this.image, this.rSize);
                 this.bitmap = resizeBitmapToScreen(this.bitmap, this.screenWidth, this.screenHeight);
-                canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
-            } catch (OutOfMemoryError oom) {
-                oom.printStackTrace();
-                MainGenerator.showOutOfMemoryErrorDialog(this.context);
-                //this.setImage(MainGenerator.errorHandler, 0, this.imageID);
+                this.imageChanged = false;
             }
+            Log.d("Graphics", "Redrawing image");
+            canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
+        } catch (OutOfMemoryError oom) {
+            oom.printStackTrace();
+            MainGenerator.showOutOfMemoryErrorDialog(this.context);
+            //this.setImage(MainGenerator.errorHandler, 0, this.imageID);
         }
+        canvas.restore();
     }
 
 }

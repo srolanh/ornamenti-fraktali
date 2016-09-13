@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "lv.srolanh.ornamenti"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 16
-        versionName "0.5.11"
+        versionCode 17
+        versionName "0.6.0"
     }
     buildTypes {
         release {

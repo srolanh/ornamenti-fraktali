@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(v.getContext(), ZalktisActivity.class);
                             v.getContext().startActivity(intent);
                             break;
+                        case R.id.zalktis_2:
+                            intent = new Intent(v.getContext(), Zalktis2Activity.class);
+                            v.getContext().startActivity(intent);
+                            break;
                         default:
                             throw new IllegalStateException("Undefined checked radio button value");
                     }

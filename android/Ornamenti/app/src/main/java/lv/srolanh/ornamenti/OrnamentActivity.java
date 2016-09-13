@@ -28,6 +28,7 @@ public class OrnamentActivity extends AppCompatActivity {
     public static final int L_UGUNSKRUSTS_ORN_INDEX = 3;
     public static final int KRUSTS_ORN_INDEX = 4;
     public static final int ZALKTIS_ORN_INDEX = 5;
+    public static final int ZALKTIS2_ORN_INDEX = 6;
     private int ornIndex;
     public String ornName;
     public ArrayList<ArrayList<Integer>> image;
@@ -88,7 +89,7 @@ public class OrnamentActivity extends AppCompatActivity {
             }
         });
 
-        Button genInverse = (Button) findViewById(R.id.gen_btn);
+        Button genInverse = (Button) findViewById(R.id.gen_inverse_btn);
         if (genInverse != null) {
             genInverse.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,7 +102,7 @@ public class OrnamentActivity extends AppCompatActivity {
             });
         }
 
-        Button gen = (Button) findViewById(R.id.gen_inverse_btn);
+        Button gen = (Button) findViewById(R.id.gen_btn);
         if (gen != null) {
             gen.setOnClickListener(new View.OnClickListener() {
                 @Override

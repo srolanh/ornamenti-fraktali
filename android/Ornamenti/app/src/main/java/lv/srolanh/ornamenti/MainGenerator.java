@@ -31,7 +31,7 @@ public class MainGenerator {
     public MainGenerator(Context ctx, int imageID) {
         this.context = ctx;
         this.imageID = imageID;
-        this.constants = new ArrayList[6];
+        this.constants = new ArrayList[7];
         ArrayList<ArrayList<Integer>> KIEGELIS = new ArrayList<>(2);
         while (KIEGELIS.size() < 2) {
             KIEGELIS.add(new ArrayList<Integer>());
@@ -92,6 +92,17 @@ public class MainGenerator {
         ZALKTIS.get(2).addAll(Arrays.asList(0, 1, 0, 0, 1, 0, 0, 1));
         ZALKTIS.get(3).addAll(Arrays.asList(0, 0, 0, 0, 0, 1, 1, 0));
         this.constants[5] = ZALKTIS;
+        ArrayList<ArrayList<Integer>> ZALKTIS2 = new ArrayList<>(6);
+        while (ZALKTIS2.size() < 6) {
+            ZALKTIS2.add(new ArrayList<Integer>());
+        }
+        ZALKTIS2.get(0).addAll(Arrays.asList(0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0));
+        ZALKTIS2.get(1).addAll(Arrays.asList(0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0));
+        ZALKTIS2.get(2).addAll(Arrays.asList(1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0));
+        ZALKTIS2.get(3).addAll(Arrays.asList(0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1));
+        ZALKTIS2.get(4).addAll(Arrays.asList(0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0));
+        ZALKTIS2.get(5).addAll(Arrays.asList(0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0));
+        this.constants[6] = ZALKTIS2;
         this.errorHandler = new ArrayList<>(1);
         this.errorHandler.add(new ArrayList<Integer>());
         this.errorHandler.get(0).add(0);

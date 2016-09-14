@@ -11,6 +11,7 @@
     <string name="action_gen">Ģenerēt</string>
     <string name="action_info">Info</string>
     <string name="action_settings">Iestatījumi</string>
+    <string name="action_save_image">Saglabāt rakstu</string>
     <string name="action_gen_next">Ģenerēt parasto</string>
     <string name="action_gen_next_inverse">Ģenerēt inverso</string>
     <string name="pref_title_color1">Raksta rūtiņu krāsa</string>

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +35,7 @@ public class OrnamentActivity extends AppCompatActivity {
     public String ornName;
     public ArrayList<ArrayList<Integer>> image;
     public int level;
+    public OrnamentView vOrnament;
     private View vGlobal;
     
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class OrnamentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_ornament_base);
 
-        final OrnamentView vOrnament = (OrnamentView) findViewById(R.id.ornament);
+        vOrnament = (OrnamentView) findViewById(R.id.ornament);
         if (isRestoredFromImage) {
             vOrnament.setImage(this.image, this.level, this.ornIndex);
         } else {
@@ -57,37 +60,6 @@ public class OrnamentActivity extends AppCompatActivity {
             this.image = generator.constants[this.ornIndex];
             this.level = 0;
         }
-        vOrnament.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                vGlobal = v;
-                //Log.d(OrnamentActivity.this.ornName, "Registered long press");
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setItems(R.array.save_options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            if (ContextCompat.checkSelfPermission(vGlobal.getContext(),
-                                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                ActivityCompat.requestPermissions((Activity) vGlobal.getContext(),
-                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                            }
-                            if (ContextCompat.checkSelfPermission(vGlobal.getContext(),
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                ActivityCompat.requestPermissions((Activity) vGlobal.getContext(),
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                            }
-                            vOrnament.saveImage(vGlobal.getContext());
-                        } else {
-                            //Log.e(OrnamentActivity.this.ornName, "Unknown option in context dialog");
-                        }
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                return true;
-            }
-        });
 
         Button genInverse = (Button) findViewById(R.id.gen_inverse_btn);
         if (genInverse != null) {
@@ -113,6 +85,33 @@ public class OrnamentActivity extends AppCompatActivity {
                     vOrnament.invalidate();
                 }
             });
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save_image:
+                if (ContextCompat.checkSelfPermission(vOrnament.getContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) vOrnament.getContext(),
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                }
+                if (ContextCompat.checkSelfPermission(vOrnament.getContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) vOrnament.getContext(),
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                }
+                vOrnament.saveImage(vOrnament.getContext());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

@@ -10,6 +10,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,6 +49,11 @@ public class OrnamentView extends View {
     private ScaleGestureDetector sgd;
     private float zoomFactor = 1.0f;
     private boolean imageChanged;
+    private int activePointerID = -1;
+    private float lastTouchX, lastTouchY;
+    private float posX = 0.0f;
+    private float posY = 0.0f;
+    public int canvasWidth = 0, canvasHeight = 0;
 
     public OrnamentView(Context context) {
         this(context, null, 0);
@@ -187,7 +193,12 @@ public class OrnamentView extends View {
         } else if (this.generator.getLevel() != this.level) {
             this.generator.setLevel(this.level);
         }
-        this.imageChanged = (this.image != this.prevImage);
+        if (this.image != this.prevImage) {
+            this.imageChanged = true;
+            this.zoomFactor = 1.0f;
+            this.posX = 0.0f;
+            this.posY = 0.0f;
+        }
         this.invalidate();
     }
 
@@ -221,6 +232,57 @@ public class OrnamentView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         sgd.onTouchEvent(e);
+        final int action = MotionEventCompat.getActionMasked(e);
+        int pointerID, pointerIndex;
+        float x, y, dX, dY;
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                pointerIndex = MotionEventCompat.getActionIndex(e);
+                x = MotionEventCompat.getX(e, pointerIndex);
+                y = MotionEventCompat.getY(e, pointerIndex);
+                lastTouchX = x;
+                lastTouchY = y;
+                activePointerID = MotionEventCompat.getPointerId(e, 0);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                pointerIndex = MotionEventCompat.findPointerIndex(e, activePointerID);
+                x = MotionEventCompat.getX(e, pointerIndex);
+                y = MotionEventCompat.getY(e, pointerIndex);
+                dX = x - lastTouchX;
+                dY = y - lastTouchY;
+                posX += dX;
+                posY += dY;
+                if (posX < -((float) (canvasWidth) * (zoomFactor - 1.0f)) / 2) {
+                    posX = -((float) (canvasWidth) * (zoomFactor - 1.0f)) / 2;
+                }
+                if (posX > 0) {
+                    posX = 0;
+                }
+                if (posY < -((float) (canvasHeight) * (zoomFactor - 1.0f)) / 2) {
+                    posY = -((float) (canvasHeight) * (zoomFactor - 1.0f)) / 2;
+                }
+                if (posY > 0) {
+                    posY = 0;
+                }
+                ViewCompat.postInvalidateOnAnimation(this);
+                lastTouchX = x;
+                lastTouchY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                activePointerID = -1;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                pointerIndex = MotionEventCompat.getActionIndex(e);
+                pointerID = MotionEventCompat.getPointerId(e, pointerIndex);
+                if (pointerID == activePointerID) {
+                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+                    lastTouchX = MotionEventCompat.getX(e, newPointerIndex);
+                    lastTouchY = MotionEventCompat.getY(e, newPointerIndex);
+                    activePointerID = MotionEventCompat.getPointerId(e, newPointerIndex);
+                }
+                break;
+        }
         return true;
     }
 
@@ -229,15 +291,16 @@ public class OrnamentView extends View {
         super.onDraw(canvas);
         canvas.save();
         canvas.scale(zoomFactor, zoomFactor);
+        canvas.translate(posX, posY);
         try {
             if (this.imageChanged) {
-                Log.d("Graphics", "Recalculating image");
                 MainGenerator.drawImage(this.context, this.bitmapCanvas, this.image, this.rSize);
                 this.bitmap = resizeBitmapToScreen(this.bitmap, this.screenWidth, this.screenHeight);
                 this.imageChanged = false;
             }
-            Log.d("Graphics", "Redrawing image");
             canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
+            this.canvasWidth = canvas.getWidth();
+            this.canvasHeight = canvas.getHeight();
         } catch (OutOfMemoryError oom) {
             oom.printStackTrace();
             MainGenerator.showOutOfMemoryErrorDialog(this.context);

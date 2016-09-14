@@ -21,8 +21,7 @@ public class MainGenerator {
     public int imageID;
     private int level;
     public ArrayList[] constants;
-    public ArrayList<ArrayList<Integer>> errorHandler;
-    public static final int UNDEFINED_IMAGE_ID = Integer.MAX_VALUE;
+    public static final int UNDEFINED_IMAGE_ID = -1;
 
     public MainGenerator(Context ctx) {
         this(ctx, UNDEFINED_IMAGE_ID);
@@ -103,9 +102,6 @@ public class MainGenerator {
         ZALKTIS2.get(4).addAll(Arrays.asList(0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0));
         ZALKTIS2.get(5).addAll(Arrays.asList(0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0));
         this.constants[6] = ZALKTIS2;
-        this.errorHandler = new ArrayList<>(1);
-        this.errorHandler.add(new ArrayList<Integer>());
-        this.errorHandler.get(0).add(0);
     }
 
     public static void drawImage(Context ctx, Canvas canvas, ArrayList<ArrayList<Integer>> image, int rSize) {

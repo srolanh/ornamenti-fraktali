@@ -2,8 +2,6 @@ package lv.srolanh.ornamenti;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -12,10 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -31,12 +26,12 @@ public class OrnamentActivity extends AppCompatActivity {
     public static final int KRUSTS_ORN_INDEX = 4;
     public static final int ZALKTIS_ORN_INDEX = 5;
     public static final int ZALKTIS2_ORN_INDEX = 6;
+    public static final int JUMIS_KOKS_ORN_INDEX = 7;
     private int ornIndex;
     public String ornName;
-    public ArrayList<ArrayList<Integer>> image;
+    public ArrayList<ArrayList<Boolean>> image;
     public int level;
     public OrnamentView vOrnament;
-    private View vGlobal;
     
     public void onCreate(Bundle savedInstanceState) {
         boolean isRestoredFromImage = false;
@@ -44,21 +39,21 @@ public class OrnamentActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("image") && savedInstanceState.containsKey("level")) {
                 isRestoredFromImage = true;
-                this.image = (ArrayList) savedInstanceState.getSerializable("image");
-                this.level = savedInstanceState.getInt("level");
+                image = (ArrayList) savedInstanceState.getSerializable("image");
+                level = savedInstanceState.getInt("level");
             }
         }
-        MainGenerator generator = new MainGenerator(this, this.ornIndex);
+        MainGenerator generator = new MainGenerator(this, ornIndex);
 
         setContentView(R.layout.activity_ornament_base);
 
         vOrnament = (OrnamentView) findViewById(R.id.ornament);
         if (isRestoredFromImage) {
-            vOrnament.setImage(this.image, this.level, this.ornIndex);
+            vOrnament.setImage(image, level, ornIndex);
         } else {
-            vOrnament.setImage(generator.constants[this.ornIndex], 0, this.ornIndex);
-            this.image = generator.constants[this.ornIndex];
-            this.level = 0;
+            vOrnament.setImage(generator.constants[ornIndex], 0, ornIndex);
+            image = generator.constants[ornIndex];
+            level = 0;
         }
 
         Button genInverse = (Button) findViewById(R.id.gen_inverse_btn);
@@ -108,7 +103,7 @@ public class OrnamentActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions((Activity) vOrnament.getContext(),
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
                 }
-                vOrnament.saveImage(vOrnament.getContext());
+                vOrnament.saveImage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -118,8 +113,8 @@ public class OrnamentActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("image", this.image);
-        outState.putInt("level", this.level);
+        outState.putSerializable("image", image);
+        outState.putInt("level", level);
     }
 
     public void setOrnamentParams(int ornIndex, String ornName) {

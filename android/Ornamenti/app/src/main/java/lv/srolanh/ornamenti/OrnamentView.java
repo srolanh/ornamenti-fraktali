@@ -31,15 +31,12 @@ import java.util.Locale;
  */
 public class OrnamentView extends View {
 
-    private ArrayList<ArrayList<Integer>> image, prevImage;
+    private ArrayList<ArrayList<Boolean>> image;
     private int level;
-    private ArrayList<ArrayList<Integer>> defaultImage;
     public boolean repeatMiddle;
     public boolean repeatQuarter;
     private int screenWidth;
     private int screenHeight;
-    private SharedPreferences preferences;
-    private String prefRepeatMethod;
     private Bitmap bitmap;
     private static final Paint bitmapPaint = new Paint();
     private Canvas bitmapCanvas;
@@ -65,13 +62,16 @@ public class OrnamentView extends View {
 
     public OrnamentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        SharedPreferences preferences;
+        String prefRepeatMethod;
+        ArrayList<ArrayList<Boolean>> defaultImage;
         this.context = context;
-        this.generator = new MainGenerator(context);
-        this.screenWidth = MainActivity.dimensions[0];
-        this.screenHeight = MainActivity.dimensions[1];
-        this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.prefRepeatMethod = preferences.getString("pref_gen_repeat", "MIDDLE");
-        switch (this.prefRepeatMethod) {
+        generator = new MainGenerator(context);
+        screenWidth = MainActivity.dimensions[0];
+        screenHeight = MainActivity.dimensions[1];
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        prefRepeatMethod = preferences.getString("pref_gen_repeat", "MIDDLE");
+        switch (prefRepeatMethod) {
             case "NONE":
                 repeatMiddle = false;
                 repeatQuarter = false;
@@ -87,10 +87,10 @@ public class OrnamentView extends View {
             default:
                 throw new IllegalArgumentException("Undefined argument for repeat method value");
         }
-        this.defaultImage = new ArrayList<>(1);
-        this.defaultImage.add(new ArrayList<Integer>(1));
-        this.defaultImage.get(0).add(1);
-        this.sgd = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        defaultImage = new ArrayList<>(1);
+        defaultImage.add(new ArrayList<Boolean>(1));
+        defaultImage.get(0).add(true);
+        sgd = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
                 zoomFactor *= detector.getScaleFactor();
@@ -99,16 +99,16 @@ public class OrnamentView extends View {
                 return true;
             }
         });
-        this.imageChanged = true;
+        imageChanged = true;
     }
 
     private File getStorageFile() {
         boolean[] storageState = MainActivity.getExternalStorageState();
         if (!storageState[0]) {
-            Toast.makeText(this.context, "Atmiņa nav pieejama", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Atmiņa nav pieejama", Toast.LENGTH_SHORT).show();
             return null;
         } else if (!storageState[1]) {
-            Toast.makeText(this.context, "Atmiņa nav rakstāma", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Atmiņa nav rakstāma", Toast.LENGTH_SHORT).show();
         }
         File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Ornamenti");
         if (!directory.exists()) {
@@ -131,39 +131,37 @@ public class OrnamentView extends View {
         return storageFile;
     }
 
-    public void setImage(ArrayList<ArrayList<Integer>> image, int level, int imageID) {
+    public void setImage(ArrayList<ArrayList<Boolean>> image, int level, int imageID) {
         this.image = image;
-        this.prevImage = this.defaultImage;
         this.level = level;
-        this.generator.imageID = imageID;
-        this.generator.setLevel(level);
-        this.onImageChange();
+        generator.imageID = imageID;
+        generator.setLevel(level);
+        onImageChange();
     }
 
-    public ArrayList<ArrayList<Integer>> getImage() {
-        return this.image;
+    public ArrayList<ArrayList<Boolean>> getImage() {
+        return image;
     }
 
     public int getLevel() {
-        return this.level;
+        return level;
     }
 
     public void updateImage(boolean inverse) {
-        this.prevImage = this.image;
-        this.image = this.generator.genFractal(this.image, inverse, this.level + 1,
+        image = generator.genFractal(image, inverse, level + 1,
                 repeatMiddle, repeatQuarter);
-        this.level += 1;
-        this.onImageChange();
+        level += 1;
+        onImageChange();
     }
 
-    public void saveImage(Context context) {
+    public void saveImage() {
         File imageFile = getStorageFile();
         if (imageFile == null) {
             return;
         }
         try {
             FileOutputStream output = new FileOutputStream(imageFile);
-            this.bitmap.compress(Bitmap.CompressFormat.PNG, 90, output);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, output);
             MediaScannerConnection.scanFile(context, new String[]{imageFile.getPath()}, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
                         @Override
@@ -180,26 +178,26 @@ public class OrnamentView extends View {
     }
 
     public void onImageChange() {
-        this.rSize = (int) Math.floor(this.screenWidth / this.image.get(0).size());
-        if (this.rSize == 0) {
-            this.rSize = 1;
+        rSize = (int) Math.floor(screenWidth / image.get(0).size());
+        if (rSize == 0) {
+            rSize = 1;
         }
-        int bitmapWidth = this.rSize * this.image.get(0).size();
-        int bitmapHeight = this.rSize * this.image.size();
-        this.bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.RGB_565);
-        this.bitmapCanvas = new Canvas(this.bitmap);
-        if (this.generator.getLevel() == 0 && this.level > 1) {
-            this.level = 0;
-        } else if (this.generator.getLevel() != this.level) {
-            this.generator.setLevel(this.level);
+        int bitmapWidth = rSize * image.get(0).size();
+        int bitmapHeight = rSize * image.size();
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.RGB_565);
+        bitmapCanvas = new Canvas(bitmap);
+        if (generator.getLevel() == 0 && level > 1) {
+            level = 0;
+        } else if (generator.getLevel() != level) {
+            generator.setLevel(level);
         }
-        if (this.image != this.prevImage) {
-            this.imageChanged = true;
-            this.zoomFactor = 1.0f;
-            this.posX = 0.0f;
-            this.posY = 0.0f;
+        if (generator.getImageChanged()) {
+            imageChanged = true;
+            zoomFactor = 1.0f;
+            posX = 0.0f;
+            posY = 0.0f;
         }
-        this.invalidate();
+        invalidate();
     }
 
     public Bitmap resizeBitmapToScreen(Bitmap bitmap, int screenWidth, int screenHeight) {
@@ -226,6 +224,7 @@ public class OrnamentView extends View {
             default:
                 throw new IllegalStateException("Unknown orientation");
         }
+
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
@@ -293,18 +292,19 @@ public class OrnamentView extends View {
         canvas.scale(zoomFactor, zoomFactor);
         canvas.translate(posX, posY);
         try {
-            if (this.imageChanged) {
-                MainGenerator.drawImage(this.context, this.bitmapCanvas, this.image, this.rSize);
-                this.bitmap = resizeBitmapToScreen(this.bitmap, this.screenWidth, this.screenHeight);
-                this.imageChanged = false;
+            if (imageChanged) {
+                MainGenerator.drawImage(context, bitmapCanvas, image, rSize);
+                bitmap = resizeBitmapToScreen(bitmap, screenWidth, screenHeight);
+                imageChanged = false;
+                generator.onImageDisplayed();
             }
-            canvas.drawBitmap(this.bitmap, 0, 0, bitmapPaint);
-            this.canvasWidth = canvas.getWidth();
-            this.canvasHeight = canvas.getHeight();
+            canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
+            canvasWidth = canvas.getWidth();
+            canvasHeight = canvas.getHeight();
         } catch (OutOfMemoryError oom) {
             oom.printStackTrace();
-            MainGenerator.showOutOfMemoryErrorDialog(this.context);
-            //this.setImage(MainGenerator.errorHandler, 0, this.imageID);
+            MainGenerator.showOutOfMemoryErrorDialog(context);
+            //setImage(MainGenerator.errorHandler, 0, imageID);
         }
         canvas.restore();
     }

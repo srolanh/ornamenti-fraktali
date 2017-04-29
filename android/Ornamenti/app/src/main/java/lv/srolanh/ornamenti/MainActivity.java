@@ -1,16 +1,9 @@
 package lv.srolanh.ornamenti;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -20,14 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,8 +67,12 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(v.getContext(), Zalktis2Activity.class);
                             v.getContext().startActivity(intent);
                             break;
+                        case R.id.jumis_koks:
+                            intent = new Intent(v.getContext(), JumisKoksActivity.class);
+                            v.getContext().startActivity(intent);
+                            break;
                         default:
-                            throw new IllegalStateException("Undefined checked radio button value");
+                            throw new IllegalArgumentException("Undefined checked radio button value");
                     }
                 }
             });
